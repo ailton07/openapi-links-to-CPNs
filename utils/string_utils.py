@@ -3,7 +3,10 @@ class StringUtils:
     # ex: "/rest/basket/6" and "/rest/basket/{basketId}"
     @staticmethod
     def compare_uri_with_model(model_uri, uri):
-        if model_uri.split(' '):
+        if model_uri == uri:
+            return True
+        #if model_uri.split(' '):
+        if len(model_uri.split(' ')) > 1:
             model_uri = model_uri.split(' ')[0]
         model_uri_splited = model_uri.split('/')
         uri_splited = uri.split('/')

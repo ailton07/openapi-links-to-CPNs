@@ -17,6 +17,10 @@ def main():
     transitions = petri_net.transition()
     petri_net.draw("value-0.png")
 
+    log_line = logs_json[1]
+    open_api_to_petri_parser.fill_input_places(log_line)
+    petri_net.draw("value-0.png")
+
 
 if __name__ == "__main__":
     main()

@@ -1,9 +1,14 @@
 import snakes.plugins
+
+from coloured_token import ColouredToken
+from utils.log_utils import LogUtils
+from utils.string_utils import StringUtils
+
 snakes.plugins.load("gv", "snakes.nets", "nets")
-from nets import *
 from prance import ResolvingParser
 from nets import PetriNet, Place, Expression, Transition, Variable  # added here to mute warnings
 from openapi.openapi_utils import OpenAPIUtils
+
 
 class OpenAPI2PetriNet:
     parser = ''
@@ -27,9 +32,8 @@ class OpenAPI2PetriNet:
 
             # cheking the OperationObjects
             for operation_object_key, operation_object_value in path_value.items():
-
                 transition = self.create_transition(uri, operation_object_key)
-                
+
                 requestBody = operation_object_value.get('requestBody')
                 self.handle_request_body(transition, requestBody)
 
@@ -41,7 +45,6 @@ class OpenAPI2PetriNet:
         self.petri_net = petri_net
 
         return petri_net
-
 
     def handle_request_body(self, transition, requestBody):
         if (requestBody):
@@ -77,17 +80,37 @@ class OpenAPI2PetriNet:
 
     def create_transition(self, uri, operation_object_key):
         # creating transition
-        transition = Transition(f"{operation_object_key+ ' ' + uri}")
+        transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri))
         # conecting the transtion with the CPN
         self.petri_net.add_transition(transition)
         return transition
-
 
     def create_place_and_connect_as_input(self, transition, property_name):
         # TODO: verify if the place already exists
         place = Place(OpenAPIUtils.create_place_name_to_parameter(property_name, transition.name), [])
         self.petri_net.add_place(place)
         self.petri_net.add_input(place.name, transition.name, Variable(property_name))
+
+    # TODO: is not working for url paramenters
+    def fill_input_places(self, log_json):
+        for transition in self.petri_net.transition():
+            if StringUtils.compare_uri_with_model(transition.name,
+                                                  LogUtils.extract_http_method_with_uri_low_case(log_json)):
+                # given a transistiopen_api_to_petri_parser.fill_input_places(log_line)on, check if we have some input to set
+                # setting tokens related to requestBody
+                request_body_parameter_names = [*log_json.get('requestBody').keys()]  # convert dict to array
+                places = transition.input()
+                for parameter_name in request_body_parameter_names:
+                    for place in places:
+                        # se o place for output de alguma transição, nao devemos colocar tokens
+                        if OpenAPIUtils.place_is_output(self.petri_net, place[0]):
+                            continue
+                        if place[0].name == OpenAPIUtils.create_place_name_to_parameter(parameter_name,
+                                                                                        transition.name):
+                            place[0].add(ColouredToken(
+                                LogUtils.create_data_from_request_body_in_log(log_json, parameter_name)))
+                            break
+                # setting tokens related to parameters
 
     def get_parser(self):
         return self.parser
