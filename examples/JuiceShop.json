@@ -1,0 +1,251 @@
+{
+    "openapi": "3.0.3",
+    "servers": [
+       {
+          "description": "SwaggerHub JuiceShop API",
+          "url": "https://virtserver.swaggerhub.com/ailton07/JuiceShop/1.0.0"
+       }
+    ],
+    "info": {
+       "description": "JuiceShop API Description.",
+       "version": "1.0.0",
+       "title": "JuiceShop API Description",
+       "contact": {
+          "email": "you@your-company.com"
+       },
+       "license": {
+          "name": "Apache 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+       }
+    },
+    "tags": [
+       {
+          "name": "View Basket",
+          "description": "View another user's shopping basket"
+       }
+    ],
+    "paths": {
+       "/rest/user/login": {
+          "post": {
+             "tags": [
+                "View Basket"
+             ],
+             "operationId": "login",
+             "requestBody": {
+                "content": {
+                   "application/json": {
+                      "schema": {
+                         "$ref": "#/components/schemas/LoginUserRequest"
+                      }
+                   }
+                }
+             },
+             "responses": {
+                "200": {
+                   "description": "search results matching criteria",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/LoginUserResponse"
+                         }
+                      }
+                   },
+                   "links": {
+                      "getBasketById": {
+                         "operationId": "getBasketById",
+                         "parameters": {
+                            "id": "$response.body#/authentication.bid"
+                         }
+                      }
+                   }
+                }
+             }
+          }
+       },
+       "/rest/basket/{bid}": {
+          "get": {
+             "tags": [
+                "View Basket"
+             ],
+             "operationId": "getBasketById",
+             "parameters": [
+                {
+                   "name": "bid",
+                   "in": "path",
+                   "required": true,
+                   "schema": {
+                      "type": "string"
+                   }
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "search results matching criteria",
+                   "content": {
+                      "application/json": {
+                         "schema": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/GetBasketByIdResponse"
+                         }
+                      }
+                   }
+                }
+             }
+          }
+       }
+    },
+    "components": {
+       "schemas": {
+          "LoginUserRequest": {
+             "type": "object",
+             "properties": {
+                "email": {
+                   "type": "string"
+                },
+                "password": {
+                   "type": "string"
+                }
+             }
+          },
+          "LoginUserResponse": {
+             "type": "object",
+             "properties": {
+                "authentication": {
+                   "type": "object",
+                   "properties": {
+                      "token": {
+                         "type": "string",
+                         "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                      },
+                      "bid": {
+                         "type": "integer",
+                         "example": 69
+                      },
+                      "umail": {
+                         "type": "integer",
+                         "example": "email@email.com"
+                      }
+                   }
+                }
+             }
+          },
+          "GetBasketByIdResponse": {
+             "type": "object",
+             "properties": {
+                "status": {
+                   "type": "string"
+                },
+                "data": {
+                   "type": "object",
+                   "properties": {
+                      "id": {
+                         "type": "integer",
+                         "example": 69
+                      },
+                      "coupon": {
+                         "type": "string",
+                         "example": "Coupon"
+                      },
+                      "createdAt": {
+                         "type": "string",
+                         "format": "date",
+                         "example": "2021-10-25T19:15:05.901Z"
+                      },
+                      "updatedAt": {
+                         "type": "string",
+                         "format": "date",
+                         "example": "2021-10-25T19:15:05.901Z"
+                      },
+                      "UserId": {
+                         "type": "integer",
+                         "example": 96
+                      },
+                      "Products": {
+                         "type": "array",
+                         "items": {
+                            "$ref": "#/components/schemas/Product"
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "Product": {
+             "type": "object",
+             "properties": {
+                "id": {
+                   "type": "integer",
+                   "example": 1
+                },
+                "name": {
+                   "type": "string",
+                   "example": "Apple Juice (1000ml)"
+                },
+                "description": {
+                   "type": "string",
+                   "example": "The all-time classic."
+                },
+                "price": {
+                   "type": "number",
+                   "example": 1.1
+                },
+                "deluxePrice": {
+                   "type": "number",
+                   "example": 0.99
+                },
+                "image": {
+                   "type": "string",
+                   "example": "apple_juice.jpg"
+                },
+                "createdAt": {
+                   "type": "string",
+                   "format": "date",
+                   "example": "2021-10-25T19:38:14.178Z"
+                },
+                "updatedAt": {
+                   "type": "string",
+                   "format": "date",
+                   "example": "2021-10-25T19:38:14.178Z"
+                },
+                "deletedAt": {
+                   "type": "string",
+                   "format": "date",
+                   "example": "2021-10-25T19:38:14.178Z"
+                },
+                "BasketItem": {
+                   "type": "object",
+                   "properties": {
+                      "id": {
+                         "type": "integer",
+                         "example": 6
+                      },
+                      "quantity": {
+                         "type": "integer",
+                         "example": 1
+                      },
+                      "createdAt": {
+                         "type": "string",
+                         "format": "date",
+                         "example": "2021-10-25T19:38:14.178Z"
+                      },
+                      "updatedAt": {
+                         "type": "string",
+                         "format": "date",
+                         "example": "2021-10-25T19:38:14.178Z"
+                      },
+                      "BasketId": {
+                         "type": "integer",
+                         "example": 6
+                      },
+                      "ProductId": {
+                         "type": "integer",
+                         "example": 1
+                      }
+                   }
+                }
+             }
+          }
+       }
+    }
+ }
