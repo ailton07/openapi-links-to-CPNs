@@ -1,0 +1,6 @@
+[
+{"timestamp":"2022-02-08T16:51:17.505Z","ip":"::ffff:127.0.0.1","message":"GET /rest/user/whoami 200 9ms","method":"GET","uri":"/rest/user/whoami","requestBody":{},"responseBody":{"user":{}},"statusCode":200},
+{"timestamp":"2022-02-08T16:51:17.562Z","ip":"::ffff:127.0.0.1","message":"POST /login 200 34ms","method":"POST","uri":"/login","requestBody":{"email":"email@email.com","password":"root123"},"responseBody":{"authentication":{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...","id":6,"umail":"email@email.com"}},"statusCode":200},
+{"timestamp":"2022-02-08T16:51:17.606Z","ip":"::ffff:127.0.0.1","message":"GET /rest/user/whoami 200 15ms","method":"GET","uri":"/rest/user/whoami","requestBody":{},"responseBody":{"user":{"id":21,"email":"email@email.com","lastLoginIp":"0.0.0.0","profileImage":"/assets/public/images/uploads/default.svg"}},"statusCode":200},
+{"timestamp":"2022-02-08T16:51:17.653Z","ip":"::ffff:127.0.0.1","message":"GET /accounts/6 200 84ms","method":"GET","uri":"/accounts/6","requestBody":{"UserId":21},"responseBody":{"status":"success","data":{"id":6,"coupon":null,"createdAt":"2022-02-08T16:51:17.548Z","updatedAt":"2022-02-08T16:51:17.548Z","UserId":21,"Products":[]}},"statusCode":200}
+]

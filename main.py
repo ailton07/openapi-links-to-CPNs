@@ -1,11 +1,15 @@
 import snakes.plugins
+
 snakes.plugins.load("gv", "snakes.nets", "nets")
-from nets import *
+import json
 from openapi.openapi2cpn import OpenAPI2PetriNet
 
-
-
 OPENAPI_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml'
+LOGS_PATH = 'logs/combined_bola_example.json'
+logs_file = open(LOGS_PATH)
+logs_json = json.load(logs_file)
+logs_file.close()
+
 
 def main():
     open_api_to_petri_parser = OpenAPI2PetriNet(OPENAPI_PATH)
