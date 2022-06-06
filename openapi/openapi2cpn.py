@@ -7,7 +7,7 @@ from utils.string_utils import StringUtils
 snakes.plugins.load("gv", "snakes.nets", "nets")
 from prance import ResolvingParser
 from nets import PetriNet, Place, Expression, Transition, Variable  # added here to mute warnings
-from openapi.openapi_utils import OpenAPIUtils
+from utils.openapi_utils import OpenAPIUtils
 
 
 class OpenAPI2PetriNet:
@@ -98,8 +98,8 @@ class OpenAPI2PetriNet:
                                                   LogUtils.extract_http_method_with_uri_low_case(log_json)):
                 # given a transistiopen_api_to_petri_parser.fill_input_places(log_line)on, check if we have some input to set
                 # setting tokens related to requestBody
-                request_body_parameter_names = OpenAPIUtils.extract_request_body_from_log(log_json)
-                query_parameter_dict = OpenAPIUtils.extract_query_parameter_from_log(log_json, transition)
+                request_body_parameter_names = LogUtils.extract_request_body_from_log(log_json)
+                query_parameter_dict = LogUtils.extract_query_parameter_from_log(log_json, transition)
                 places = transition.input()
                 if len(request_body_parameter_names) > 0:
                     for parameter_name in request_body_parameter_names:
