@@ -98,19 +98,32 @@ class OpenAPI2PetriNet:
                                                   LogUtils.extract_http_method_with_uri_low_case(log_json)):
                 # given a transistiopen_api_to_petri_parser.fill_input_places(log_line)on, check if we have some input to set
                 # setting tokens related to requestBody
-                request_body_parameter_names = [*log_json.get('requestBody').keys()]  # convert dict to array
+                request_body_parameter_names = OpenAPIUtils.extract_request_body_from_log(log_json)
+                query_parameter_dict = OpenAPIUtils.extract_query_parameter_from_log(log_json, transition)
                 places = transition.input()
-                for parameter_name in request_body_parameter_names:
-                    for place in places:
-                        # se o place for output de alguma transição, nao devemos colocar tokens
-                        if OpenAPIUtils.place_is_output(self.petri_net, place[0]):
-                            continue
-                        if place[0].name == OpenAPIUtils.create_place_name_to_parameter(parameter_name,
-                                                                                        transition.name):
-                            place[0].add(ColouredToken(
-                                LogUtils.create_data_from_request_body_in_log(log_json, parameter_name)))
-                            break
+                if len(request_body_parameter_names) > 0:
+                    for parameter_name in request_body_parameter_names:
+                        for place in places:
+                            # se o place for output de alguma transição, nao devemos colocar tokens
+                            if OpenAPIUtils.place_is_output(self.petri_net, place[0]):
+                                continue
+                            if place[0].name == OpenAPIUtils.create_place_name_to_parameter(parameter_name,
+                                                                                            transition.name):
+                                place[0].add(ColouredToken(
+                                    LogUtils.create_data_from_request_body_in_log(log_json, parameter_name)))
+                                break;
                 # setting tokens related to parameters
+                elif len(query_parameter_dict) > 0:
+                    for key, value in query_parameter_dict.items():
+                        for place in places:
+                            # se o place for output de alguma transição, nao devemos colocar tokens
+                            if OpenAPIUtils.place_is_output(self.petri_net, place[0]):
+                                continue
+                            if place[0].name == OpenAPIUtils.create_place_name_to_parameter(key,
+                                                                                            transition.name):
+                                place[0].add(ColouredToken(
+                                    LogUtils.create_data_from_query_parameter_in_log(key, value, log_json)))
+                                break;
 
     def get_parser(self):
         return self.parser
