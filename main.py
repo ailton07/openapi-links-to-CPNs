@@ -1,8 +1,12 @@
 import snakes.plugins
 
+from coloured_token import ColouredToken
+from utils.log_utils import LogUtils
+
 snakes.plugins.load("gv", "snakes.nets", "nets")
 import json
 from openapi.openapi2cpn import OpenAPI2PetriNet
+from nets import Substitution  # added here to mute warnings
 
 OPENAPI_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml'
 LOGS_PATH = 'logs/combined_bola_example.json'
@@ -20,6 +24,14 @@ def main():
 
     log_line = logs_json[1]
     open_api_to_petri_parser.fill_input_places(log_line)
+    petri_net.draw("value-0.png")
+
+    # fire transition
+    email = ColouredToken(LogUtils.create_data_from_request_body_in_log(log_line, 'email'))
+    password = ColouredToken(LogUtils.create_data_from_request_body_in_log(log_line, 'password'))
+    #authentication = ColouredToken(LogUtils.create_response_data_from_log(log_line, 'authentication'))
+
+    #transitions[0].fire(Substitution(email=email, password=password, authentication=authentication))
     petri_net.draw("value-0.png")
 
     log_line = logs_json[3]

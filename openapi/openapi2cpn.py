@@ -41,7 +41,7 @@ class OpenAPI2PetriNet:
                 self.handle_parameters(transition, parameters)
 
                 responses = operation_object_value.get('responses')
-                self.handle_responses(uri, transition, responses)
+                self.handle_responses_status_code(uri, transition, responses)
         self.petri_net = petri_net
 
         return petri_net
@@ -65,7 +65,8 @@ class OpenAPI2PetriNet:
             for parameter in parameters:
                 self.create_place_and_connect_as_input(transition, parameter.get('name'))
 
-    def handle_responses(self, uri, transition, responses):
+    # this the response place
+    def handle_responses_status_code(self, uri, transition, responses):
         if (responses):
             for responseKey, responseValue in responses.items():
                 content = responseValue.get('content')
