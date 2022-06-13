@@ -1,0 +1,1 @@
+RESPONSE_BODY = '$response.body#/'

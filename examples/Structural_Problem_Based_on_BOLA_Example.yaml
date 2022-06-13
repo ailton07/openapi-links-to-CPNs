@@ -48,6 +48,8 @@ paths:
           links:
             goToSignup:
               operationId: signup
+              parameters:
+                email: $response.body#/authentication.email
   /signup:
     post:
       tags: [ "Signup" ]

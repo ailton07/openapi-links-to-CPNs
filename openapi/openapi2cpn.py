@@ -1,6 +1,7 @@
 import snakes.plugins
 
 from coloured_token import ColouredToken
+from constants import RESPONSE_BODY
 from utils.log_utils import LogUtils
 from utils.string_utils import StringUtils
 
@@ -40,11 +41,44 @@ class OpenAPI2PetriNet:
                 parameters = operation_object_value.get('parameters')
                 self.handle_parameters(transition, parameters)
 
-                responses = operation_object_value.get('responses')
-                self.handle_responses_status_code(uri, transition, responses)
-        self.petri_net = petri_net
-
+                # responses = operation_object_value.get('responses')
+                # self.handle_responses_status_code(uri, transition, responses)
+        
+        self.create_link_arcs()
         return petri_net
+
+
+    def create_link_arcs(self):
+        spec = self.parser.specification
+        for path_key, path_value in spec.get('paths').items():
+            uri = path_key
+            # cheking the OperationObjects
+            for operation_object_key, operation_object_value in path_value.items():
+                uri = OpenAPIUtils.create_transition_name(operation_object_key, uri)
+                transition = OpenAPIUtils.get_transition_by_name(self.petri_net, uri)
+
+                responses = operation_object_value.get('responses')
+                links = OpenAPIUtils.extract_links_from_responses(responses)
+                if (links):
+                    for link in links:
+                        for link_key, link_value in link.items():
+                            # create arc to the following input
+                            operation_id = link_value.get('operationId')
+                            parameters_key_value = link_value.get('parameters')
+                            if parameters_key_value:
+                                ((parameter_id, parameter_value),) = parameters_key_value.items()
+                                nex_transition_name = OpenAPIUtils.get_transition_by_operation_id(spec, operation_id)
+                                input_place = OpenAPIUtils.get_place_by_name(
+                                    self.petri_net, OpenAPIUtils.create_place_name_to_parameter(parameter_id, nex_transition_name))
+
+                                if RESPONSE_BODY in parameter_value:
+                                    expression_str = 'request.get_object_from_response_body_dict()'
+                                    for parameter_value_parts in parameter_value \
+                                            .replace(RESPONSE_BODY, '') \
+                                            .split('.'):
+                                        expression_str = expression_str + f'.get(\'{parameter_value_parts}\')'
+                                self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
+                                
 
     def handle_request_body(self, transition, requestBody):
         if (requestBody):
