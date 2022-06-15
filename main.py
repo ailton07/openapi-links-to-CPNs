@@ -1,6 +1,6 @@
 import snakes.plugins
 
-from coloured_token import ColouredToken
+from coloured_token import ColouredToken, RequestResponseToken
 from utils.log_utils import LogUtils
 
 snakes.plugins.load("gv", "snakes.nets", "nets")
@@ -26,12 +26,13 @@ def main():
     open_api_to_petri_parser.fill_input_places(log_line)
     petri_net.draw("value-0.png")
 
-    # fire transition
+    # fire 
+    request_line = RequestResponseToken(*LogUtils.create_request_response_from_log(log_line))
     email = ColouredToken(LogUtils.create_data_from_request_body_in_log(log_line, 'email'))
     password = ColouredToken(LogUtils.create_data_from_request_body_in_log(log_line, 'password'))
-    #authentication = ColouredToken(LogUtils.create_response_data_from_log(log_line, 'authentication'))
+    authentication = ColouredToken(LogUtils.create_response_data_from_log(log_line, 'authentication'))
 
-    #transitions[0].fire(Substitution(email=email, password=password, authentication=authentication))
+    transitions[0].fire(Substitution(request=request_line, email=email, password=password, authentication=authentication))
     petri_net.draw("value-0.png")
 
     log_line = logs_json[3]

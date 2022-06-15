@@ -42,3 +42,21 @@ class LogUtils:
         else:
             return result
         return result
+
+    @staticmethod
+    def create_request_response_from_log(log_json, openAPI2PetriNet=None):
+            return {
+                       'uri': log_json.get('uri'),
+                       'method': log_json.get('method'),
+                       'user_id': log_json.get('ip')
+                   }, {
+                       'response_body': log_json.get('responseBody'),
+                       'user_id': log_json.get('ip')
+                   }, log_json.get('statusCode')
+
+    @staticmethod
+    def create_response_data_from_log(log_json, parameter):
+        return {
+            parameter:log_json.get('responseBody').get(parameter), 
+            'user_id':log_json.get('ip')
+            }   

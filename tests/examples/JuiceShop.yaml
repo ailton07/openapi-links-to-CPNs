@@ -37,7 +37,7 @@ paths:
             getBasketById:
               operationId: getBasketById
               parameters:
-                id: $response.body#/authentication.bid
+                bid: $response.body#/authentication.bid
   /rest/basket/{bid}:
     get:
       tags: ["View Basket"]
