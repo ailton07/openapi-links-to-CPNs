@@ -55,13 +55,22 @@ class RequestResponseToken(ColouredToken):
     def get_object_from_response_body_dict (self):
         return json.loads(self.response_body).get('response_body')
 
-    def get_from_reponse_body (self, element):
+    def _get_from_reponse_body (self, element):
         if len(str.split(element, '.')) > 1 :
             response = json.loads(self.response_body)['response_body']
             for splited_element in str.split(element, '.'):
                 response = response.get(splited_element)
             return response
         return json.loads(self.response_body).get('response_body').get(element)
+
+    def _get_key_value_from_response_body(self, element):
+        response = self._get_from_reponse_body(element)
+        return {str.split(element, '.')[-1]: response}
+
+    def get_token_from_reponse_body (self, element):
+        result = self._get_key_value_from_response_body (element)
+        result[USER_IDENTIFICATION] = self.user_id
+        return ColouredToken(result)
 
     def get_status(self):
         response = {

@@ -72,7 +72,7 @@ class OpenAPI2PetriNet:
                                     self.petri_net, OpenAPIUtils.create_place_name_to_parameter(parameter_id, nex_transition_name))
 
                                 if RESPONSE_BODY in parameter_value:
-                                    expression_str = f"request.get_from_reponse_body('{parameter_value.replace(RESPONSE_BODY, '')}')"
+                                    expression_str = f"request.get_token_from_reponse_body('{parameter_value.replace(RESPONSE_BODY, '')}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 
 
