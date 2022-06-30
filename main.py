@@ -8,9 +8,11 @@ import json
 from openapi.openapi2cpn import OpenAPI2PetriNet
 from nets import Substitution  # added here to mute warnings
 
-OPENAPI_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml'
-LOGS_PATH = 'logs/combined_bola_example.json'
-LOGS_PATH = 'logs/combined_example_structural_problem.json'
+# OPENAPI_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml'
+# LOGS_PATH = 'logs/combined_bola_example.json'
+#TODO: testar com Structural_Problem_Based_on_BOLA_Example_02
+#OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
+OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml', 'logs/combined_example_structural_problem.json'
 logs_file = open(LOGS_PATH)
 logs_json = json.load(logs_file)
 logs_file.close()
