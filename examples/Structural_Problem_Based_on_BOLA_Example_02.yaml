@@ -69,6 +69,17 @@ paths:
       responses:
         '200':
           description: user created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SignUpUserResponse'
+          # Nós devemos modelar apenas fluxos obrigatórios e não opcionais
+          # links:
+          #   goToLogin:
+          #     operationId: login
+          #     parameters:
+          #       email: $response.body#/email
   /accounts/{id}:
     get:
       tags: ["Log-in"]
@@ -132,3 +143,10 @@ components:
             name:
               type: string
               example: "I'm a User"
+    SignUpUserResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
