@@ -158,3 +158,8 @@ class OpenAPI2PetriNet:
 
     def get_parser(self):
         return self.parser
+
+    def extract_variables_from_request_line(self, request_line):
+        transition_name = OpenAPIUtils.create_transition_name(request_line.method, request_line.uri)
+        transition = OpenAPIUtils.get_transition_by_name(self.petri_net, transition_name)
+        

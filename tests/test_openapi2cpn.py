@@ -1,0 +1,36 @@
+
+import json
+import pytest
+
+from openapi.openapi2cpn import OpenAPI2PetriNet
+
+
+@pytest.fixture
+def get_juice_shop_petri_net(filename):
+    # open_api_to_petri_parser = OpenAPI2PetriNet(f'../examples/{filename}')
+    open_api_to_petri_parser = OpenAPI2PetriNet(f'tests/examples/{filename}')
+    petri_net = open_api_to_petri_parser.create_petri_net('Juice Shop')
+    return open_api_to_petri_parser, petri_net
+
+@pytest.fixture
+def get_logs(logs_name):
+    LOGS_PATH = logs_name
+    logs_file = open(LOGS_PATH)
+    logs_json = json.load(logs_file)
+    logs_file.close()
+    return logs_json
+
+
+# TODO: COntinue here
+@pytest.mark.parametrize("logs_name, line, filename, expected_result", [
+    #
+    ("logs/combined_example_structural_problem.json", 
+    1, 
+    "Structural_Problem_Based_on_BOLA_Example.yaml",
+     {'authentication.umail':'email@email.com'})
+])
+def test_extract_variables_from_request_line(logs_name, line, filename, expected_result, get_logs, get_juice_shop_petri_net):
+    assert True == True
+    log_line = get_logs[line]
+    open_api_to_petri_parser, petri_net = get_juice_shop_petri_net
+    assert True == False

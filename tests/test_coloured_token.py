@@ -8,7 +8,6 @@ from utils.log_utils import LogUtils
 
 @pytest.fixture
 def get_logs(logs_name):
-    #LOGS_PATH = 'logs/combined_example_structural_problem.json'
     LOGS_PATH = logs_name
     logs_file = open(LOGS_PATH)
     logs_json = json.load(logs_file)
