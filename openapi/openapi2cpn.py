@@ -123,15 +123,15 @@ class OpenAPI2PetriNet:
         self.petri_net.add_input(place.name, transition.name, Variable(property_name))
 
     # CHECK TODO
-    # TODO: is not working for url paramenters
+    # TODO: is not working for url paramenters (path parameters)
     def fill_input_places(self, log_json):
         for transition in self.petri_net.transition():
             if StringUtils.compare_uri_with_model(transition.name,
                                                   LogUtils.extract_http_method_with_uri_low_case(log_json)):
                 # given a transistiopen_api_to_petri_parser.fill_input_places(log_line)on, check if we have some input to set
                 # setting tokens related to requestBody
-                request_body_parameter_names = LogUtils.extract_request_body_from_log(log_json)
-                query_parameter_dict = LogUtils.extract_query_parameter_from_log(log_json, transition.name)
+                request_body_parameter_names = LogUtils.extract_request_body_names_from_log(log_json)
+                path_parameter_dict = LogUtils.extract_path_parameter_from_log(log_json, transition.name)
                 places = transition.input()
                 if len(request_body_parameter_names) > 0:
                     for parameter_name in request_body_parameter_names:
@@ -145,8 +145,8 @@ class OpenAPI2PetriNet:
                                     LogUtils.create_data_from_request_body_in_log(log_json, parameter_name)))
                                 break;
                 # setting tokens related to parameters
-                elif len(query_parameter_dict) > 0:
-                    for key, value in query_parameter_dict.items():
+                elif len(path_parameter_dict) > 0:
+                    for key, value in path_parameter_dict.items():
                         for place in places:
                             # se o place for output de alguma transição, nao devemos colocar tokens
                             if OpenAPIUtils.place_is_output(self.petri_net, place[0]):
@@ -179,10 +179,23 @@ class OpenAPI2PetriNet:
 
     # TODO: extract data from url    
     def create_binding_from_request_line(self, log_json_request_line):
-        transition_name = OpenAPIUtils.create_transition_name(log_json_request_line.get('method'), request_line.get('uri'))
+        binding = {}
+        url = log_json_request_line.get('uri')
+        transition_name = OpenAPIUtils.create_transition_name(log_json_request_line.get('method'), url)
         transition = OpenAPIUtils.get_transition_by_name(self.petri_net, transition_name)
         for variable in transition.pre.values():
             variable_name = variable.name
-            request_body = LogUtils.extract_request_body_from_log(log_json_request_line, transition_name)
-        return transition
+            request_body = LogUtils.extract_request_body_from_log(log_json_request_line)
+            # check only in the first level if the variable_name is present
+            # TODO: check object sublevels, for example, if we are looking for 'email', 
+            # the object can be request_body.attribute1.obj2.email
+            variable_in_request_body = request_body.get(variable_name)
+            if variable_in_request_body != None:
+                binding[variable_name] = variable_in_request_body
+                continue
+            else:
+                path_object = self.find_path_object_by_name(url)
+                # 1. check query parameter
+                # 2. check url value
+        return binding
         

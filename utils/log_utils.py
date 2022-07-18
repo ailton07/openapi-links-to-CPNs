@@ -21,14 +21,20 @@ class LogUtils:
         return OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri'))
 
     @staticmethod
-    def extract_request_body_from_log(log_json):
+    def extract_request_body_names_from_log(log_json):
         return [*log_json.get('requestBody').keys()]  # convert dict to array
+
+    @staticmethod
+    def extract_request_body_from_log(log_json):
+        return log_json.get('requestBody')
 
     # TODO: check URLs with multiple values
     @staticmethod
-    def extract_query_parameter_from_log(log_json, transition_name):
+    def extract_path_parameter_from_log(log_json, transition_name):
         result = {}
         if OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri')) == transition_name:
+            # if the url in log and in the model has the same name, then there is not path parameter
+            # example, '/login' == '/login'
             return result
         transition_uri_splited = transition_name.split('-')[1].split('/')
         log_uri_splited = log_json.get('uri').split('/')
