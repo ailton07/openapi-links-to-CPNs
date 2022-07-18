@@ -24,12 +24,13 @@ class LogUtils:
     def extract_request_body_from_log(log_json):
         return [*log_json.get('requestBody').keys()]  # convert dict to array
 
+    # TODO: check URLs with multiple values
     @staticmethod
-    def extract_query_parameter_from_log(log_json, transition):
+    def extract_query_parameter_from_log(log_json, transition_name):
         result = {}
-        if OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri')) == transition.name:
+        if OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri')) == transition_name:
             return result
-        transition_uri_splited = transition.name.split('-')[1].split('/')
+        transition_uri_splited = transition_name.split('-')[1].split('/')
         log_uri_splited = log_json.get('uri').split('/')
 
         if (len(transition_uri_splited) == len(log_uri_splited)):

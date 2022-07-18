@@ -122,6 +122,7 @@ class OpenAPI2PetriNet:
         self.petri_net.add_place(place)
         self.petri_net.add_input(place.name, transition.name, Variable(property_name))
 
+    # CHECK TODO
     # TODO: is not working for url paramenters
     def fill_input_places(self, log_json):
         for transition in self.petri_net.transition():
@@ -130,7 +131,7 @@ class OpenAPI2PetriNet:
                 # given a transistiopen_api_to_petri_parser.fill_input_places(log_line)on, check if we have some input to set
                 # setting tokens related to requestBody
                 request_body_parameter_names = LogUtils.extract_request_body_from_log(log_json)
-                query_parameter_dict = LogUtils.extract_query_parameter_from_log(log_json, transition)
+                query_parameter_dict = LogUtils.extract_query_parameter_from_log(log_json, transition.name)
                 places = transition.input()
                 if len(request_body_parameter_names) > 0:
                     for parameter_name in request_body_parameter_names:
@@ -159,7 +160,29 @@ class OpenAPI2PetriNet:
     def get_parser(self):
         return self.parser
 
-    def extract_variables_from_request_line(self, request_line):
-        transition_name = OpenAPIUtils.create_transition_name(request_line.method, request_line.uri)
+    
+    
+    def find_path_object_by_name(self, path_name):
+        """ Given a path_name, por example, '/login', return the path objecy
+        from OpenAPI specification
+
+        Args:
+            path_name (string): the name of the path object, in other words, the path, example: '/signup'
+
+        Returns:
+            json object: path objecy from OpenAPI specification
+        """
+        for path_object_key, path_object_value in self.parser.specification.get('paths').items():
+            if path_object_key == path_name:
+                return path_object_value
+
+
+    # TODO: extract data from url    
+    def create_binding_from_request_line(self, log_json_request_line):
+        transition_name = OpenAPIUtils.create_transition_name(log_json_request_line.get('method'), request_line.get('uri'))
         transition = OpenAPIUtils.get_transition_by_name(self.petri_net, transition_name)
+        for variable in transition.pre.values():
+            variable_name = variable.name
+            request_body = LogUtils.extract_request_body_from_log(log_json_request_line, transition_name)
+        return transition
         
