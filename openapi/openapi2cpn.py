@@ -175,6 +175,10 @@ class OpenAPI2PetriNet:
         for path_object_key, path_object_value in self.parser.specification.get('paths').items():
             if path_object_key == path_name:
                 return path_object_value
+            else:
+                # se o path_object nao foi encontrado pelo metodo anterior, e possivel que o path tenha um parametro
+                if StringUtils.compare_uri_with_model(path_object_key, path_name):
+                    return path_object_value
 
 
     # TODO: extract data from url    
@@ -194,8 +198,9 @@ class OpenAPI2PetriNet:
                 binding[variable_name] = variable_in_request_body
                 continue
             else:
-                path_object = self.find_path_object_by_name(url)
                 # 1. check query parameter
+                # TODO: implement this case
                 # 2. check url value
+                path_object = self.find_path_object_by_name(url)
         return binding
         

@@ -28,7 +28,11 @@ def get_logs(logs_name):
     ("logs/combined_example_structural_problem.json",
      1,
      "Structural_Problem_Based_on_BOLA_Example.yaml",
-     {'email': 'email@email.com', 'password':'root123'})
+     {'email': 'email@email.com', 'password':'root123'}),
+     ("logs/combined_example_structural_problem.json",
+     3,
+     "Structural_Problem_Based_on_BOLA_Example.yaml",
+     {'id': 6})
 ])
 def test_create_binding_from_request_line(logs_name, line, filename, expected_result, get_logs, get_juice_shop_petri_net):
     assert True == True
@@ -37,7 +41,6 @@ def test_create_binding_from_request_line(logs_name, line, filename, expected_re
     binding = open_api_to_petri_parser.create_binding_from_request_line(
         log_line)
     assert binding == expected_result
-    assert True == False
 
 
 @pytest.mark.parametrize("filename, path_name, expected_result", [

@@ -1,4 +1,5 @@
 from utils.openapi_utils import OpenAPIUtils
+from utils.string_utils import StringUtils
 
 
 class LogUtils:
@@ -36,19 +37,23 @@ class LogUtils:
             # if the url in log and in the model has the same name, then there is not path parameter
             # example, '/login' == '/login'
             return result
-        transition_uri_splited = transition_name.split('-')[1].split('/')
-        log_uri_splited = log_json.get('uri').split('/')
-
-        if (len(transition_uri_splited) == len(log_uri_splited)):
-            for i in range(len(transition_uri_splited)):
-                if (transition_uri_splited[i] != log_uri_splited[i]):
-                    if ('{' in transition_uri_splited[i]):
-                        key = transition_uri_splited[i].replace("{", "").replace("}", "")
-                        value = log_uri_splited[i]
-                        result[key] = value
-        else:
-            return result
+        
+        result = StringUtils.extract_url_value_from_url(transition_name.split('-')[1], log_json.get('uri'))
         return result
+        #TODO: remove
+        # transition_uri_splited = transition_name.split('-')[1].split('/')
+        # log_uri_splited = log_json.get('uri').split('/')
+
+        # if (len(transition_uri_splited) == len(log_uri_splited)):
+        #     for i in range(len(transition_uri_splited)):
+        #         if (transition_uri_splited[i] != log_uri_splited[i]):
+        #             if ('{' in transition_uri_splited[i]):
+        #                 key = transition_uri_splited[i].replace("{", "").replace("}", "")
+        #                 value = log_uri_splited[i]
+        #                 result[key] = value
+        # else:
+        #     return result
+        # return result
 
     @staticmethod
     def create_request_response_from_log(log_json, openAPI2PetriNet=None):
