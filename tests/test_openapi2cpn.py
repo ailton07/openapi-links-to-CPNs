@@ -32,7 +32,7 @@ def get_logs(logs_name):
      ("logs/combined_example_structural_problem.json",
      3,
      "Structural_Problem_Based_on_BOLA_Example.yaml",
-     {'id': 6})
+     {'id': '6'})
 ])
 def test_create_binding_from_request_line(logs_name, line, filename, expected_result, get_logs, get_juice_shop_petri_net):
     assert True == True

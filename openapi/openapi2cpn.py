@@ -174,17 +174,17 @@ class OpenAPI2PetriNet:
         """
         for path_object_key, path_object_value in self.parser.specification.get('paths').items():
             if path_object_key == path_name:
-                return path_object_value
+                return {path_object_key: path_object_value}
             else:
                 # se o path_object nao foi encontrado pelo metodo anterior, e possivel que o path tenha um parametro
                 if StringUtils.compare_uri_with_model(path_object_key, path_name):
-                    return path_object_value
+                    return {path_object_key: path_object_value}
 
 
     # TODO: extract data from url    
     def create_binding_from_request_line(self, log_json_request_line):
         binding = {}
-        url = log_json_request_line.get('uri')
+        url = LogUtils.extract_uri_from_log(log_json_request_line)
         transition_name = OpenAPIUtils.create_transition_name(log_json_request_line.get('method'), url)
         transition = OpenAPIUtils.get_transition_by_name(self.petri_net, transition_name)
         for variable in transition.pre.values():
@@ -202,5 +202,9 @@ class OpenAPI2PetriNet:
                 # TODO: implement this case
                 # 2. check url value
                 path_object = self.find_path_object_by_name(url)
+                if path_object:
+                    dict_in_url = StringUtils.extract_url_value_from_url(list(path_object.keys())[0], url)
+                    binding.update(dict_in_url)
+                    
         return binding
         

@@ -29,6 +29,14 @@ class LogUtils:
     def extract_request_body_from_log(log_json):
         return log_json.get('requestBody')
 
+    @staticmethod
+    def extract_uri_from_log(log_json):
+        return log_json.get('uri')
+
+    @staticmethod
+    def extract_method_from_log(log_json):
+        return log_json.get('method')
+
     # TODO: check URLs with multiple values
     @staticmethod
     def extract_path_parameter_from_log(log_json, transition_name):

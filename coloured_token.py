@@ -65,7 +65,8 @@ class RequestResponseToken(ColouredToken):
 
     def _get_key_value_from_response_body(self, element):
         response = self._get_from_reponse_body(element)
-        return {str.split(element, '.')[-1]: response}
+        #return {str.split(element, '.')[-1]: response}
+        return {element : response}
 
     def get_token_from_reponse_body (self, element):
         result = self._get_key_value_from_response_body (element)
