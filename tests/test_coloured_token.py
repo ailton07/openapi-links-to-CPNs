@@ -80,7 +80,6 @@ def test_get_key_value_from_response_body(logs_name, line, expected_result, get_
 def test_get_token_from_reponse_body(logs_name, line, test_value, expected_result, get_logs):
     log_line = get_logs[line]
     request_line = RequestResponseToken(*LogUtils.create_request_response_from_log(log_line))
-    #for key_value, expected_value in expected_result.items():
     result = request_line.get_token_from_reponse_body(test_value)
     assert result is not None 
     assert_token = ColouredToken(expected_result)
