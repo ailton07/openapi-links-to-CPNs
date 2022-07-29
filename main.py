@@ -32,16 +32,24 @@ def main():
     request_line = RequestResponseToken(*LogUtils.create_request_response_from_log(log_line))
     email = ColouredToken(LogUtils.create_data_from_request_body_in_log(log_line, 'email'))
     password = ColouredToken(LogUtils.create_data_from_request_body_in_log(log_line, 'password'))
-    authentication = ColouredToken(LogUtils.create_response_data_from_log(log_line, 'authentication'))
     
+    #authentication = ColouredToken(LogUtils.create_response_data_from_log(log_line, 'authentication'))
     #transitions[0].fire(Substitution(request=request_line, email=email, password=password, authentication=authentication))
 
-    fire_object = {'request':request_line, 'email':email, 'password':password, 'authentication':authentication}
+    #fire_object = {'request':request_line, 'email':email, 'password':password}
+    fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
+    # TODO: Colocar seleção automática da transition, baseado no log
     transitions[0].fire(Substitution(fire_object))
     petri_net.draw("value-0.png")
 
     log_line = logs_json[3]
     open_api_to_petri_parser.fill_input_places(log_line)
+    petri_net.draw("value-0.png")
+
+    # TODO: problema aqui com esse disparo
+    # parece que no ColouredToken está authentication.id e no arco está id
+    fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
+    transitions[3].fire(Substitution(fire_object))
     petri_net.draw("value-0.png")
 
 

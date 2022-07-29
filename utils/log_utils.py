@@ -11,11 +11,16 @@ class LogUtils:
         }
 
     @staticmethod
-    def create_data_from_query_parameter_in_log(parameter, value, log_json):
+    def create_data_custom_from_log(parameter, value, log_json):
         return {
             parameter: value,
             'user_id': log_json.get('ip')
         }
+
+    @staticmethod
+    def create_data_custom_from_log_with_dict(dict, log_json):
+        dict['user_id'] =  log_json.get('ip')
+        return dict
 
     @staticmethod
     def extract_http_method_with_uri_low_case(log_json):

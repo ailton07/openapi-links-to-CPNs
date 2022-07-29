@@ -1,6 +1,6 @@
 import snakes.plugins
 
-from coloured_token import ColouredToken
+from coloured_token import ColouredToken, RequestResponseToken
 from constants import RESPONSE_BODY
 from utils.log_utils import LogUtils
 from utils.string_utils import StringUtils
@@ -154,7 +154,7 @@ class OpenAPI2PetriNet:
                             if place[0].name == OpenAPIUtils.create_place_name_to_parameter(key,
                                                                                             transition.name):
                                 place[0].add(ColouredToken(
-                                    LogUtils.create_data_from_query_parameter_in_log(key, value, log_json)))
+                                    LogUtils.create_data_custom_from_log(key, value, log_json)))
                                 break;
 
     def get_parser(self):
@@ -195,7 +195,13 @@ class OpenAPI2PetriNet:
             # the object can be request_body.attribute1.obj2.email
             variable_in_request_body = request_body.get(variable_name)
             if variable_in_request_body != None:
-                binding[variable_name] = variable_in_request_body
+                binding[variable_name] = ColouredToken(
+                    LogUtils.create_data_custom_from_log(
+                        variable_name,
+                        variable_in_request_body,
+                        log_json_request_line
+                        )
+                    )
                 continue
             else:
                 # 1. check query parameter
@@ -204,7 +210,11 @@ class OpenAPI2PetriNet:
                 path_object = self.find_path_object_by_name(url)
                 if path_object:
                     dict_in_url = StringUtils.extract_url_value_from_url(list(path_object.keys())[0], url)
-                    binding.update(dict_in_url)
-                    
+                    coloured_token = ColouredToken(LogUtils.create_data_custom_from_log_with_dict(dict_in_url, log_json_request_line))
+                    variable_name = list(dict_in_url.keys())[0]
+                    binding[variable_name] = coloured_token
+        
+        request_line = RequestResponseToken(*LogUtils.create_request_response_from_log(log_json_request_line))
+        binding['request'] = request_line
         return binding
         
