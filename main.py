@@ -36,8 +36,8 @@ def main():
     #authentication = ColouredToken(LogUtils.create_response_data_from_log(log_line, 'authentication'))
     #transitions[0].fire(Substitution(request=request_line, email=email, password=password, authentication=authentication))
 
-    #fire_object = {'request':request_line, 'email':email, 'password':password}
-    fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
+    fire_object = {'request':request_line, 'email':email, 'password':password}
+    #fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
     # TODO: Colocar seleção automática da transition, baseado no log
     transitions[0].fire(Substitution(fire_object))
     petri_net.draw("value-0.png")
