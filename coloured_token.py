@@ -67,16 +67,16 @@ class RequestResponseToken(ColouredToken):
         Returns:
             pair(key, response): key is the element, when it is simple, 
             and it is the last element part when it is composed
-            the response is the value in self.response_body
-            ex: 'id', 6
+            the response is the value in self.response_body in string format
+            ex: 'id', "6"
         """
         if len(str.split(element, '.')) > 1 :
             response = json.loads(self.response_body)['response_body']
             for splited_element in str.split(element, '.'):
                 key = splited_element
                 response = response.get(splited_element)
-            return key, response
-        return element, json.loads(self.response_body).get('response_body').get(element)
+            return key, str(response)
+        return element, str(json.loads(self.response_body).get('response_body').get(element))
 
     def _get_key_value_from_response_body(self, element):
         key, response = self._get_from_reponse_body(element)
