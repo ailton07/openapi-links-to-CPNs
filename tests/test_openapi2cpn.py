@@ -55,3 +55,22 @@ def test_find_path_object_by_name(filename, path_name, expected_result, get_juic
     open_api_to_petri_parser, petri_net = get_juice_shop_petri_net
     response = open_api_to_petri_parser.find_path_object_by_name(path_name)
     assert (response != None) == expected_result
+
+
+@pytest.mark.parametrize("filename, logs_name, log_line_number, expected_result", [
+    ("Structural_Problem_Based_on_BOLA_Example.yaml",
+     "logs/combined_example_structural_problem.json",
+     1,
+     "post-/login"),
+     ("Structural_Problem_Based_on_BOLA_Example.yaml",
+     "logs/combined_example_structural_problem.json",
+     3,
+     "get-/accounts/{id}")
+])
+def test_get_transition_from_log_line(filename, logs_name, log_line_number, expected_result, get_juice_shop_petri_net, get_logs):
+    open_api_to_petri_parser, petri_net = get_juice_shop_petri_net
+    log_file = get_logs
+    log_line = log_file[log_line_number]
+    response = open_api_to_petri_parser.get_transition_from_log_line(log_line)
+    
+    assert response.name == expected_result

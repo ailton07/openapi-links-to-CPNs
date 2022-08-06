@@ -218,3 +218,22 @@ class OpenAPI2PetriNet:
         binding['request'] = request_line
         return binding
         
+    def get_transition_from_log_line(self, log_line):
+        """ Returns the transition associated to a given log line
+
+        Args:
+            log_line (_type_): the log line in json format.
+            ex: {"timestamp":"2022-02-08T16:51:17.653Z","ip":"::ffff:127.0.0.1","message":"GET /accounts/6 200 84ms","method":"GET","uri":"/accounts/6","requestBody":{},"responseBody":{"status":"success","data":{"id":6,"coupon":null,"createdAt":"2022-02-08T16:51:17.548Z","updatedAt":"2022-02-08T16:51:17.548Z","UserId":21,"Products":[]}},"statusCode":200}
+
+        Returns:
+            _type_: find the transition associated to that log line
+        """
+        transitions = self.petri_net.transition()
+        url = LogUtils.extract_uri_from_log(log_line)
+        method = LogUtils.extract_method_from_log(log_line)
+
+        for transition in transitions:
+            calculated_transition_name = OpenAPIUtils.create_transition_name(method, url)
+            if StringUtils.compare_uri_with_model(transition.name, calculated_transition_name):
+                return transition
+        return None

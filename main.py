@@ -38,20 +38,18 @@ def main():
 
     #fire_object = {'request':request_line, 'email':email, 'password':password}
     fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
-    # TODO: Colocar seleção automática da transition, baseado no log
-    transitions[0].fire(Substitution(fire_object))
+    transition = open_api_to_petri_parser.get_transition_from_log_line(log_line)
+    transition.fire(Substitution(fire_object))
     petri_net.draw("value-0.png")
 
     log_line = logs_json[3]
     open_api_to_petri_parser.fill_input_places(log_line)
     petri_net.draw("value-0.png")
 
-    # TODO: problema aqui com esse disparo
     fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
-#     request_line = RequestResponseToken(*LogUtils.create_request_response_from_log(log_line))
-#     fire_object = {'request':request_line, 'id': ColouredToken({"id":6,
-# "user_id":"::ffff:127.0.0.1"})}
-    transitions[3].fire(Substitution(fire_object))
+    transition = open_api_to_petri_parser.get_transition_from_log_line(log_line)
+    transition.fire(Substitution(fire_object))
+    petri_net.draw("value-0.png")
     petri_net.draw("value-0.png")
 
 

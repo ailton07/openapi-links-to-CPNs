@@ -1,8 +1,15 @@
 class StringUtils:
-    # return true if the URIs are the same
-    # ex: "/rest/basket/6" and "/rest/basket/{basketId}"
     @staticmethod
     def compare_uri_with_model(model_uri, uri):
+        """ Return true if the URIs describe the same endpoint (they are the same)
+
+        Args:
+            model_uri (String): a url described in the OpenAPI, ex: "/rest/basket/{basketId}"
+            uri (String): a concrete URL, like the one from the logs, ex: "/rest/basket/6"
+
+        Returns:
+            Boolean: If the URLs match, True, otherwise, false 
+        """
         if model_uri == uri:
             return True
         #if model_uri.split(' '):
