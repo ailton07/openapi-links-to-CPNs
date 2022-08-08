@@ -14,6 +14,7 @@ from utils.openapi_utils import OpenAPIUtils
 class OpenAPI2PetriNet:
     parser = ''
     petri_net = None
+    default_documentation_title = 'OpenAPI Document'
 
     def __init__(self, openapi_path):
         self.parser = ResolvingParser(openapi_path)
@@ -187,6 +188,10 @@ class OpenAPI2PetriNet:
         url = LogUtils.extract_uri_from_log(log_json_request_line)
         transition_name = OpenAPIUtils.create_transition_name(log_json_request_line.get('method'), url)
         transition = OpenAPIUtils.get_transition_by_name(self.petri_net, transition_name)
+        
+        if transition == None:
+            return None
+
         for variable in transition.pre.values():
             variable_name = variable.name
             request_body = LogUtils.extract_request_body_from_log(log_json_request_line)
@@ -237,3 +242,9 @@ class OpenAPI2PetriNet:
             if StringUtils.compare_uri_with_model(transition.name, calculated_transition_name):
                 return transition
         return None
+
+    def get_documentation_title(self):
+        if self.parser.specification.get('info').get('title'):
+            return self.parser.specification.get('info').get('title')
+        else:
+            return self.default_documentation_title

@@ -1,3 +1,4 @@
+import json
 from utils.openapi_utils import OpenAPIUtils
 from utils.string_utils import StringUtils
 
@@ -85,3 +86,11 @@ class LogUtils:
             parameter:log_json.get('responseBody').get(parameter), 
             'user_id':log_json.get('ip')
             }   
+
+
+    @staticmethod
+    def load_logs(logs_path):
+        logs_file = open(logs_path)
+        logs_json = json.load(logs_file)
+        logs_file.close()
+        return logs_json
