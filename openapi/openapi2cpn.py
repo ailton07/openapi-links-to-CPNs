@@ -1,7 +1,7 @@
 import snakes.plugins
 
-from coloured_token import ColouredToken, RequestResponseToken
-from constants import RESPONSE_BODY
+from replay.coloured_token import ColouredToken, RequestResponseToken
+from utils.constants import RESPONSE_BODY
 from utils.log_utils import LogUtils
 from utils.string_utils import StringUtils
 

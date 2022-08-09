@@ -2,7 +2,7 @@
 import json
 
 import pytest
-from coloured_token import ColouredToken, RequestResponseToken
+from replay.coloured_token import ColouredToken, RequestResponseToken
 from utils.log_utils import LogUtils
 
 
