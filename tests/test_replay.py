@@ -7,8 +7,8 @@ from replay.replay import Replay
      "logs/combined_example_structural_problem.json",
      ["0-initial-state.png", "line-1-input-places.png", "line-1-fire-line.png", 
      "line-3-input-places.png", "line-3-fire-line.png"]),
-     ("tests/examples/Structural_Problem_Based_on_BOLA_Example.yaml",
-     "logs/combined_example_structural_problem.json",
+     ("tests/examples/JuiceShop.yaml",
+     "logs/combined_login.json",
      ["0-initial-state.png", "line-1-input-places.png", "line-1-fire-line.png", 
      "line-3-input-places.png", "line-3-fire-line.png"])
 ])
