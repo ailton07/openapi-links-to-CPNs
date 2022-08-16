@@ -1,15 +1,23 @@
+import argparse
 from replay.replay import Replay
 
-# OPENAPI_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml'
-# LOGS_PATH = 'logs/combined_bola_example.json'
-#TODO: testar com Structural_Problem_Based_on_BOLA_Example_02
 #OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
-OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml', 'logs/combined_example_structural_problem.json'
+#OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml', 'logs/combined_example_structural_problem.json'
 
+parser = argparse.ArgumentParser(description='Execute the replay of logs on OpenAPI Specifications')
+parser.add_argument('open_api_path',
+                       metavar='open_api_path',
+                       type=str,
+                       help='the path to the OpenApi Specification')
+parser.add_argument('logs_path',
+                       metavar='logs_path',
+                       type=str,
+                       help='the path to the log file')
 
 def main():
-    #replay_execution_on_log(OPENAPI_PATH, LOGS_PATH)
-    Replay.replay_execution_on_log(OPENAPI_PATH, LOGS_PATH)
+    #Replay.replay_execution_on_log(OPENAPI_PATH, LOGS_PATH)
+    openapi_path, logs_path = vars(parser.parse_args()).values()
+    Replay.replay_execution_on_log(openapi_path, logs_path)
     return None
 
 # def main():
