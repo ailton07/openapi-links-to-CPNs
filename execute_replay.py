@@ -3,6 +3,8 @@ from replay.replay import Replay
 
 #OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml', 'logs/combined_example_structural_problem.json'
+#OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login.json'
+#OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login_multiuser.json'
 
 parser = argparse.ArgumentParser(description='Execute the replay of logs on OpenAPI Specifications')
 parser.add_argument('open_api_path',
@@ -16,6 +18,7 @@ parser.add_argument('logs_path',
 
 def main():
     #Replay.replay_execution_on_log(OPENAPI_PATH, LOGS_PATH)
+    #return None
     openapi_path, logs_path = vars(parser.parse_args()).values()
     Replay.replay_execution_on_log(openapi_path, logs_path)
     return None

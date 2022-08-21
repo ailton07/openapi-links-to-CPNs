@@ -2,6 +2,7 @@ import pytest
 from replay.replay import Replay
 
 # TODO: Improve test cases
+# TODO: fix intermitent error
 @pytest.mark.parametrize("OAS_filename, logs_name, expected_results", [
     ("tests/examples/Structural_Problem_Based_on_BOLA_Example.yaml",
      "logs/combined_example_structural_problem.json",
@@ -19,3 +20,4 @@ def test_replay_execution_on_log(OAS_filename, logs_name, expected_results):
     for expected_result in expected_results:
         if expected_result in draw_names == False:
             assert True == False
+    assert True
