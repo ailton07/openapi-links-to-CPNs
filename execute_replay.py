@@ -1,7 +1,10 @@
 import argparse
 from replay.replay import Replay
 
-#OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
+# TODO: ainda temos problemas para esse caso do Structural_Problem_Based_on_BOLA_Example.yaml
+# checar mudanças em get_token_from_reponse_body
+OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
+
 #OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml', 'logs/combined_example_structural_problem.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login_multiuser.json'
