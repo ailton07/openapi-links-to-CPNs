@@ -25,7 +25,7 @@ class LogUtils:
 
     @staticmethod
     def extract_http_method_with_uri_low_case(log_json):
-        return OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri'))
+        return OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri'), log_json.get('statusCode'))
 
     @staticmethod
     def extract_request_body_names_from_log(log_json):
@@ -43,11 +43,15 @@ class LogUtils:
     def extract_method_from_log(log_json):
         return log_json.get('method')
 
+    @staticmethod
+    def extract_status_code_from_log(log_json):
+        return log_json.get('statusCode')
+
     # TODO: check URLs with multiple values
     @staticmethod
     def extract_path_parameter_from_log(log_json, transition_name):
         result = {}
-        if OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri')) == transition_name:
+        if OpenAPIUtils.create_transition_name(log_json.get('method'), log_json.get('uri'), log_json.get('statusCode')) == transition_name:
             # if the url in log and in the model has the same name, then there is not path parameter
             # example, '/login' == '/login'
             return result

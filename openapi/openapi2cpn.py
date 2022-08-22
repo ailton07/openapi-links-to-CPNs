@@ -34,16 +34,13 @@ class OpenAPI2PetriNet:
 
             # cheking the OperationObjects
             for operation_object_key, operation_object_value in path_value.items():
-                transition = self.create_transition(uri, operation_object_key)
-
                 requestBody = operation_object_value.get('requestBody')
-                self.handle_request_body(transition, requestBody)
-
                 parameters = operation_object_value.get('parameters')
-                self.handle_parameters(transition, parameters)
+                for response_key, response_object_value in operation_object_value.get('responses').items():
+                    transition = self.create_transition(uri, operation_object_key, response_key)
 
-                # responses = operation_object_value.get('responses')
-                # self.handle_responses_status_code(uri, transition, responses)
+                    self.handle_request_body(transition, requestBody)
+                    self.handle_parameters(transition, parameters)
         
         self.create_link_arcs()
         return petri_net
@@ -55,14 +52,13 @@ class OpenAPI2PetriNet:
             uri = path_key
             # cheking the OperationObjects
             for operation_object_key, operation_object_value in path_value.items():
-                uri = OpenAPIUtils.create_transition_name(operation_object_key, uri)
-                transition = OpenAPIUtils.get_transition_by_name(self.petri_net, uri)
+                for response_key_status_code, response_object_value in operation_object_value.get('responses').items():
+                    transition_name = OpenAPIUtils.create_transition_name(operation_object_key, uri, response_key_status_code)
+                    transition = OpenAPIUtils.get_transition_by_name(self.petri_net, transition_name)
 
-                responses = operation_object_value.get('responses')
-                links = OpenAPIUtils.extract_links_from_responses(responses)
-                if (links):
+                    links = OpenAPIUtils.extract_links_from_response(response_object_value)
                     for link in links:
-                        for link_key, link_value in link.items():
+                        for link_value in link.values():
                             # create arc to the following input
                             operation_id = link_value.get('operationId')
                             parameters_key_value = link_value.get('parameters')
@@ -110,18 +106,29 @@ class OpenAPI2PetriNet:
                             self.petri_net.add_place(place)
                             self.petri_net.add_output(place.name, transition.name, Expression("request.get_response()"))
 
-    def create_transition(self, uri, operation_object_key):
+    # def create_transition(self, uri, operation_object_key):
+    #     # creating transition
+    #     transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri))
+    #     # conecting the transtion with the CPN
+    #     self.petri_net.add_transition(transition)
+    #     return transition
+
+    def create_transition(self, uri, operation_object_key, status_code):
         # creating transition
-        transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri))
+        transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri, status_code))
         # conecting the transtion with the CPN
         self.petri_net.add_transition(transition)
         return transition
 
     def create_place_and_connect_as_input(self, transition, property_name):
-        # TODO: verify if the place already exists
         place = Place(OpenAPIUtils.create_place_name_to_parameter(property_name, transition.name), [])
-        self.petri_net.add_place(place)
-        self.petri_net.add_input(place.name, transition.name, Variable(property_name))
+        connected_place = OpenAPIUtils.get_place_by_name(self.petri_net, place.name)
+        if connected_place == None:
+            self.petri_net.add_place(place)
+            self.petri_net.add_input(place.name, transition.name, Variable(property_name))
+        else:
+            self.petri_net.add_input(connected_place.name, transition.name, Variable(property_name))
+
 
     # CHECK TODO
     # TODO: is not working for url paramenters (path parameters)
@@ -186,7 +193,8 @@ class OpenAPI2PetriNet:
     def create_binding_from_request_line(self, log_json_request_line):
         binding = {}
         url = LogUtils.extract_uri_from_log(log_json_request_line)
-        transition_name = OpenAPIUtils.create_transition_name(log_json_request_line.get('method'), url)
+        status_code = LogUtils.extract_status_code_from_log(log_json_request_line)
+        transition_name = OpenAPIUtils.create_transition_name(log_json_request_line.get('method'), url, status_code)
         transition = OpenAPIUtils.get_transition_by_name(self.petri_net, transition_name)
         
         if transition == None:
@@ -236,9 +244,10 @@ class OpenAPI2PetriNet:
         transitions = self.petri_net.transition()
         url = LogUtils.extract_uri_from_log(log_line)
         method = LogUtils.extract_method_from_log(log_line)
+        status_code = LogUtils.extract_status_code_from_log(log_line)
 
         for transition in transitions:
-            calculated_transition_name = OpenAPIUtils.create_transition_name(method, url)
+            calculated_transition_name = OpenAPIUtils.create_transition_name(method, url, status_code)
             if StringUtils.compare_uri_with_model(transition.name, calculated_transition_name):
                 return transition
         return None

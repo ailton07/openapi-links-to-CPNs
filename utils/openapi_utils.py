@@ -3,13 +3,22 @@ from utils.string_utils import StringUtils
 
 class OpenAPIUtils:
 
+    # @staticmethod
+    # def create_transition_name(operation_object_key, uri):
+    #     return str.lower(f"{operation_object_key}-{uri}")
+
     @staticmethod
-    def create_transition_name(operation_object_key, uri):
-        return str.lower(f"{operation_object_key}-{uri}")
+    def create_transition_name(operation_object_key, uri, status_code):
+        return str.lower(f"{operation_object_key}-{uri}-{status_code}")
+
+    @staticmethod
+    def remove_code_from_transition_name(transition_name):
+        transition_name_splited = transition_name.split("-")
+        return str.lower(f"{transition_name_splited[0]}-{transition_name_splited[1]}")
 
     @staticmethod
     def create_place_name_to_parameter(parameter_name, transition_name):
-        return str.lower(f"{parameter_name} {transition_name}")
+        return str.lower(f"{parameter_name} {OpenAPIUtils.remove_code_from_transition_name(transition_name)}")
 
     @staticmethod
     def get_place_by_name(petri_net, name):
@@ -49,6 +58,16 @@ class OpenAPIUtils:
 
     @staticmethod
     def extract_links_from_responses(responses):
+        """Receives a Responses Object, in other words, a object where the keys are status codes
+        and the values are Response Objects. Returns a list of links
+
+        Args:
+            responses (list): List of responses. 
+            Ex: {'200': {'description': 'search results match...g criteria', 'content': {...}, 'links': {...}}, '404': {'description': 'user not found', 'content': {...}, 'links': {...}}}
+
+        Returns:
+            list: A list of links. Ex: [{'getBasketById': {...}}, {'goToSignup': {...}}]
+        """
         links_set = []
         if (responses):
             for responseKey, responseValue in responses.items():
@@ -58,11 +77,31 @@ class OpenAPIUtils:
         return links_set
 
 
+    @staticmethod
+    def extract_links_from_response(response):
+        """Receives a Response Object and returns a list of links
+
+        Args:
+            response (Response Object): A Response Object.
+            Ex: {'description': 'search results match...g criteria', 'content': {...}, 'links': {...}}
+
+        Returns:
+            list: A list of links. Ex: [{'getBasketById': {...}}, {'goToSignup': {...}}]
+        """
+        links_set = []
+        if (response):
+            links = response.get('links')
+            if links:
+                links_set.append(links)
+        return links_set
+
+
     def get_transition_by_operation_id(spec, operation_id):
         for path_key, path_value in spec.get('paths').items():
             uri = path_key
             for operation_object_key, operation_object_value in path_value.items():
-                uri = OpenAPIUtils.create_transition_name(operation_object_key, uri)
-                operationId = operation_object_value.get('operationId')
-                if operationId == operation_id:
-                    return uri
+                for response_key, response_object_value in operation_object_value.get('responses').items():
+                    uri = OpenAPIUtils.create_transition_name(operation_object_key, uri, response_key)
+                    operationId = operation_object_value.get('operationId')
+                    if operationId == operation_id:
+                        return uri

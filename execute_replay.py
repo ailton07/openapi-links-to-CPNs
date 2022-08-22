@@ -1,10 +1,7 @@
 import argparse
 from replay.replay import Replay
 
-# TODO: ainda temos problemas para esse caso do Structural_Problem_Based_on_BOLA_Example.yaml
-# checar mudanças em get_token_from_reponse_body
 OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
-
 #OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml', 'logs/combined_example_structural_problem.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login_multiuser.json'
@@ -20,8 +17,8 @@ parser.add_argument('logs_path',
                        help='the path to the log file')
 
 def main():
-    #Replay.replay_execution_on_log(OPENAPI_PATH, LOGS_PATH)
-    #return None
+    Replay.replay_execution_on_log(OPENAPI_PATH, LOGS_PATH)
+    return None
     openapi_path, logs_path = vars(parser.parse_args()).values()
     Replay.replay_execution_on_log(openapi_path, logs_path)
     return None

@@ -16,7 +16,7 @@ def get_juice_shop_petri_net(filename):
     ("Structural_Problem_Based_on_BOLA_Example_02.yaml",
      ['email post-/login', 'password post-/login', 'email post-/signup', 'password post-/signup']),
     ("Structural_Problem_Based_on_BOLA_Example.yaml",
-     ['email post-/login', 'password post-/login', 'email post-/signup', 'password post-/signup',
+     ['email post-/login', 'password post-/login', 'email post-/login', 'password post-/login', 'email post-/signup', 'password post-/signup',
       'id get-/accounts/{id}']),
     ("JuiceShop.yaml",
      ['email post-/rest/user/login', 'password post-/rest/user/login', 'bid get-/rest/basket/{bid}']

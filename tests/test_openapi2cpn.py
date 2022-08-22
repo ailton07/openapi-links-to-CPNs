@@ -61,11 +61,11 @@ def test_find_path_object_by_name(filename, path_name, expected_result, get_juic
     ("Structural_Problem_Based_on_BOLA_Example.yaml",
      "logs/combined_example_structural_problem.json",
      1,
-     "post-/login"),
+     "post-/login-200"),
      ("Structural_Problem_Based_on_BOLA_Example.yaml",
      "logs/combined_example_structural_problem.json",
      3,
-     "get-/accounts/{id}")
+     "get-/accounts/{id}-200")
 ])
 def test_get_transition_from_log_line(filename, logs_name, log_line_number, expected_result, get_juice_shop_petri_net, get_logs):
     open_api_to_petri_parser, petri_net = get_juice_shop_petri_net
