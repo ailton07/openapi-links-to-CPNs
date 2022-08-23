@@ -94,7 +94,30 @@ class LogUtils:
 
     @staticmethod
     def load_logs(logs_path):
+        """ Read a file and returns the content parsed as json
+        Case 1: Example of an accepted file with a proper format
+        [{"timestamp":"2022-02-08T16:51:17.505Z"},{"timestamp":"2022-02-08T16:51:17.505Z"}]
+
+        Case 2: Example of an accepted file with a improper format
+        {"timestamp":"2022-02-08T16:51:17.505Z"}
+        {"timestamp":"2022-02-08T16:51:17.505Z"}
+
+        Args:
+            logs_path (string): Path to the logs
+
+        Returns:
+            Array<Objects>: Returns an array of objects
+        """
         logs_file = open(logs_path)
-        logs_json = json.load(logs_file)
+        try:
+            logs_json = json.load(logs_file)
+        except json.JSONDecodeError as exception:
+            logs_file.close()
+            with open(logs_path) as logs_file:
+                # TODO: add to the tests this case
+                logs_json = []
+                for line in logs_file.readlines():
+                    parsed_line_json = json.loads(line)
+                    logs_json.append(parsed_line_json)
         logs_file.close()
         return logs_json

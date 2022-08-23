@@ -42,7 +42,11 @@ class Replay:
             DrawUtils.draw(draws, f"line-{line_number}-input-places.png", petri_net)
 
             fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
-            transition.fire(Substitution(fire_object))
+            try:
+                transition.fire(Substitution(fire_object))
+            except ValueError as exception:
+                print(f'Fire error, line {line_number}:  {exception}')
+                continue
             #draws[f"line-{line_number}-fire-line.png"] = petri_net.draw(f"line-{line_number}-fire-line.png")
             DrawUtils.draw(draws, f"line-{line_number}-fire-line.png", petri_net)
 
