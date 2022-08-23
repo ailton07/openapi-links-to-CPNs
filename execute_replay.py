@@ -6,7 +6,7 @@ OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yam
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login_multiuser.json'
 
-OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/log_signup_login_basket.log'
+OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/log_signup_login_basket_with_false_positive.log'
 
 parser = argparse.ArgumentParser(description='Execute the replay of logs on OpenAPI Specifications')
 parser.add_argument('open_api_path',
