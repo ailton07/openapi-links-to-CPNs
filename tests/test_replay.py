@@ -6,12 +6,10 @@ from replay.replay import Replay
 @pytest.mark.parametrize("OAS_filename, logs_name, expected_results", [
     ("tests/examples/Structural_Problem_Based_on_BOLA_Example.yaml",
      "logs/combined_example_structural_problem.json",
-     ["0-initial-state.png", "line-1-input-places.png", "line-1-fire-line.png", 
-     "line-3-input-places.png", "line-3-fire-line.png"]),
+     ['0-initial-state.png', 'line-1-fire-line.png', 'line-3-fire-line.png']),
      ("tests/examples/JuiceShop.yaml",
      "logs/combined_login.json",
-     ["0-initial-state.png", "line-1-input-places.png", "line-1-fire-line.png", 
-     "line-3-input-places.png", "line-3-fire-line.png"])
+     ['0-initial-state.png', 'line-1-fire-line.png', 'line-3-fire-line.png'])
 ])
 def test_replay_execution_on_log(OAS_filename, logs_name, expected_results):
     draws = Replay.replay_execution_on_log(OAS_filename, logs_name)

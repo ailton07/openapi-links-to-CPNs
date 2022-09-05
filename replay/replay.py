@@ -37,9 +37,9 @@ class Replay:
                 print(f'Line {line_number} is not present in the model: {log_line.get("message")}')
                 continue
 
-            open_api_to_petri_parser.fill_input_places(log_line)
+            #open_api_to_petri_parser.fill_input_places(log_line)
             #draws[f"line-{line_number}-input-places.png"] = petri_net.draw(f"line-{line_number}-input-places.png")
-            DrawUtils.draw(draws, f"line-{line_number}-input-places.png", petri_net)
+            #DrawUtils.draw(draws, f"line-{line_number}-input-places.png", petri_net)
 
             fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
             try:
