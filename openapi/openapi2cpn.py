@@ -48,8 +48,6 @@ class OpenAPI2PetriNet:
                 parameters = operation_object_value.get('parameters')
                 for response_key, response_object_value in operation_object_value.get('responses').items():
                     transition = self.create_transition(uri, operation_object_key, response_key, response_object_value)
-                    if transition is None:
-                        continue
                     # create only places associated with link
                     self.handle_request_body(transition, requestBody, response_object_value)
                     self.handle_parameters(transition, parameters, response_object_value)
@@ -152,18 +150,8 @@ class OpenAPI2PetriNet:
     #     self.petri_net.add_transition(transition)
     #     return transition
 
-    # TODO: aqui, sabemos as transicoes que tem links dentro, mas nao mapeamos as
-    # transicoes que sao saídas de um link
-    def is_transition_related_to_link(self, response_object_value):
-        links = OpenAPIUtils.extract_links_from_response(response_object_value)
-        if (len(links) > 0):
-            return True
-        return False
-
     def create_transition(self, uri, operation_object_key, status_code, response_object_value):
         # creating transition
-        # devido ao TODO acima, nao estamos validando
-        #if (self.is_transition_related_to_link(response_object_value)):
         transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri, status_code))
         # conecting the transtion with the CPN
         self.petri_net.add_transition(transition)
