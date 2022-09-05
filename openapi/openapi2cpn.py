@@ -46,11 +46,12 @@ class OpenAPI2PetriNet:
             for operation_object_key, operation_object_value in path_value.items():
                 requestBody = operation_object_value.get('requestBody')
                 parameters = operation_object_value.get('parameters')
+                operation_id = operation_object_value.get('operationId')
                 for response_key, response_object_value in operation_object_value.get('responses').items():
                     transition = self.create_transition(uri, operation_object_key, response_key, response_object_value)
                     # create only places associated with link
-                    self.handle_request_body(transition, requestBody, response_object_value)
-                    self.handle_parameters(transition, parameters, response_object_value)
+                    self.handle_request_body(transition, requestBody, response_object_value, operation_id)
+                    self.handle_parameters(transition, parameters, response_object_value, operation_id)
         
         self.create_link_arcs()
         self.remove_disconnected_transitions()
@@ -82,21 +83,29 @@ class OpenAPI2PetriNet:
                                 if RESPONSE_BODY in parameter_value:
                                     expression_str = f"request.get_token_from_reponse_body('{parameter_value.replace(RESPONSE_BODY, '')}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
+                                elif REQUEST_PATH in parameter_value:
+                                    # TODO: implement get_token_from_path
+                                    expression_str = f"request.get_token_from_path('{parameter_value.replace(REQUEST_PATH, '')}')"
+                                    self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 
 
-    def is_request_body_related_to_link(self, property_name, response_object_value):
+    def is_request_body_related_to_link(self, property_name, response_object_value, operation_id):
+        # check if has a link
         links = OpenAPIUtils.extract_links_from_response(response_object_value)
+        links.extend(OpenAPIUtils.extract_links_from_paths_object(self.parser))
         for link in links:
             for link_value in link.values():
+                local_operation_id = link_value.get('operationId')
                 parameters_key_value = link_value.get('parameters')
-                if parameters_key_value:
+                if local_operation_id == operation_id and parameters_key_value:
                     ((parameter_id, parameter_value),) = parameters_key_value.items()
                     if RESPONSE_BODY in parameter_value:
                         if property_name in parameter_value:
                             return True
+
         return False
 
-    def handle_request_body(self, transition, requestBody, response_object_value):
+    def handle_request_body(self, transition, requestBody, response_object_value, operation_id):
         if (requestBody):
             content = requestBody.get('content')
             for contentKey, contentValue in content.items():
@@ -108,26 +117,28 @@ class OpenAPI2PetriNet:
                         properties = schema.get('properties')
                         for property_key, property_value in properties.items():
                             property_name = property_key
-                            if self.is_request_body_related_to_link(property_name, response_object_value):
+                            if self.is_request_body_related_to_link(property_name, response_object_value, operation_id):
                                 self.create_place_and_connect_as_input(transition, property_name)
 
-    def is_paramenter_related_to_link(self, property_name, response_object_value):
+
+    def is_paramenter_related_to_link(self, property_name, response_object_value, operation_id):
         links = OpenAPIUtils.extract_links_from_response(response_object_value)
+        links.extend(OpenAPIUtils.extract_links_from_paths_object(self.parser))
         for link in links:
             for link_value in link.values():
+                local_operation_id = link_value.get('operationId')
                 parameters_key_value = link_value.get('parameters')
-                if parameters_key_value:
+                if local_operation_id == operation_id and parameters_key_value:
                     ((parameter_id, parameter_value),) = parameters_key_value.items()
-                    if REQUEST_PATH in parameter_value:
-                        if property_name in parameter_value:
-                            return True
+                    if property_name.get('name') in parameter_value:
+                        return True
         return False
 
-    def handle_parameters(self, transition, parameters, response_object_value):
+    def handle_parameters(self, transition, parameters, response_object_value, operation_id):
         if (parameters):
             for parameter in parameters:
-                self.is_paramenter_related_to_link(parameter, response_object_value)
-                self.create_place_and_connect_as_input(transition, parameter.get('name'))
+                if self.is_paramenter_related_to_link(parameter, response_object_value, operation_id):
+                    self.create_place_and_connect_as_input(transition, parameter.get('name'))
 
     # this the response place
     def handle_responses_status_code(self, uri, transition, responses):
