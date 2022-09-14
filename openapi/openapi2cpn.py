@@ -254,12 +254,12 @@ class OpenAPI2PetriNet:
             # check only in the first level if the variable_name is present
             # TODO: check object sublevels, for example, if we are looking for 'email', 
             # the object can be request_body.attribute1.obj2.email
-            variable_in_request_body = request_body.get(variable_name)
-            if variable_in_request_body != None:
+            variable_value_in_request_body = request_body.get(variable_name)
+            if variable_value_in_request_body != None:
                 binding[variable_name] = ColouredToken(
                     LogUtils.create_data_custom_from_log(
                         variable_name,
-                        variable_in_request_body,
+                        variable_value_in_request_body,
                         log_json_request_line
                         )
                     )
