@@ -74,6 +74,7 @@ class OpenAPI2PetriNet:
                             # create arc to the following input
                             operation_id = link_value.get('operationId')
                             parameters_key_value = link_value.get('parameters')
+                            request_body_key_value = link_value.get('requestBody')
                             if parameters_key_value:
                                 ((parameter_id, parameter_value),) = parameters_key_value.items()
                                 nex_transition_name = OpenAPIUtils.get_transition_by_operation_id(spec, operation_id)
@@ -87,6 +88,19 @@ class OpenAPI2PetriNet:
                                     # TODO: implement get_token_from_path
                                     expression_str = f"request.get_token_from_path('{parameter_value.replace(REQUEST_PATH, '')}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
+                            elif request_body_key_value:
+                                ((request_body_id, request_body_value),) = request_body_key_value.items()
+                                nex_transition_name = OpenAPIUtils.get_transition_by_operation_id(spec, operation_id)
+                                input_place = OpenAPIUtils.get_place_by_name(
+                                    self.petri_net, OpenAPIUtils.create_place_name_to_parameter(request_body_id, nex_transition_name))
+
+                                if RESPONSE_BODY in request_body_value:
+                                    expression_str = f"request.get_token_from_reponse_body('{request_body_value.replace(RESPONSE_BODY, '')}')"
+                                    self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
+                                elif REQUEST_PATH in parameter_value:
+                                    # TODO: implement get_token_from_path
+                                    expression_str = f"request.get_token_from_path('{request_body_value.replace(REQUEST_PATH, '')}')"
+                                    self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 
 
     def is_request_body_related_to_link(self, property_name, response_object_value, operation_id):
@@ -97,10 +111,16 @@ class OpenAPI2PetriNet:
             for link_value in link.values():
                 local_operation_id = link_value.get('operationId')
                 parameters_key_value = link_value.get('parameters')
+                request_body_key_value = link_value.get('requestBody')
                 if local_operation_id == operation_id and parameters_key_value:
                     ((parameter_id, parameter_value),) = parameters_key_value.items()
                     if RESPONSE_BODY in parameter_value:
                         if property_name in parameter_value:
+                            return True
+                elif local_operation_id == operation_id and request_body_key_value:
+                    ((request_body_id, request_body_value),) = request_body_key_value.items()
+                    if RESPONSE_BODY in request_body_value:
+                        if property_name in request_body_value:
                             return True
 
         return False
@@ -238,7 +258,7 @@ class OpenAPI2PetriNet:
 
 
     # TODO: extract data from url    
-    def create_binding_from_request_line(self, log_json_request_line):
+    def create_binding_from_request_line(self, log_json_request_line, force_str=False):
         binding = {}
         url = LogUtils.extract_uri_from_log(log_json_request_line)
         status_code = LogUtils.extract_status_code_from_log(log_json_request_line)
@@ -255,6 +275,9 @@ class OpenAPI2PetriNet:
             # TODO: check object sublevels, for example, if we are looking for 'email', 
             # the object can be request_body.attribute1.obj2.email
             variable_value_in_request_body = request_body.get(variable_name)
+            # TODO: ao inves de converter tudo pra str, tentar usar os tipos certos dos valores
+            if force_str:
+                variable_value_in_request_body = str(variable_value_in_request_body)
             if variable_value_in_request_body != None:
                 binding[variable_name] = ColouredToken(
                     LogUtils.create_data_custom_from_log(

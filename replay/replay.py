@@ -43,7 +43,13 @@ class Replay:
 
             fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
             try:
-                transition.fire(Substitution(fire_object))
+                try:
+                    # Testing
+                    # petri_net.place()[0].tokens.items()[0] == fire_object.get('id')
+                    transition.fire(Substitution(fire_object))
+                except ValueError as exception:
+                    fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line, True)
+                    transition.fire(Substitution(fire_object))
             except ValueError as exception:
                 print(f'Fire error, line {line_number}:  {exception}')
                 continue
