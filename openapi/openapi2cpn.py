@@ -48,7 +48,7 @@ class OpenAPI2PetriNet:
                 parameters = operation_object_value.get('parameters')
                 operation_id = operation_object_value.get('operationId')
                 for response_key, response_object_value in operation_object_value.get('responses').items():
-                    transition = self.create_transition(uri, operation_object_key, response_key, response_object_value)
+                    transition = self.create_transition(uri, operation_object_key, response_key)
                     # create only places associated with link
                     self.handle_request_body(transition, requestBody, response_object_value, operation_id)
                     self.handle_parameters(transition, parameters, response_object_value, operation_id)
@@ -181,7 +181,7 @@ class OpenAPI2PetriNet:
     #     self.petri_net.add_transition(transition)
     #     return transition
 
-    def create_transition(self, uri, operation_object_key, status_code, response_object_value):
+    def create_transition(self, uri, operation_object_key, status_code):
         # creating transition
         transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri, status_code))
         # conecting the transtion with the CPN
