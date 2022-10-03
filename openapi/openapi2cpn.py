@@ -44,14 +44,12 @@ class OpenAPI2PetriNet:
 
             # cheking the OperationObjects
             for operation_object_key, operation_object_value in path_value.items():
-                requestBody = operation_object_value.get('requestBody')
-                parameters = operation_object_value.get('parameters')
                 operation_id = operation_object_value.get('operationId')
                 for response_key, response_object_value in operation_object_value.get('responses').items():
                     transition = self.create_transition(uri, operation_object_key, response_key)
                     # create only places associated with link
-                    self.handle_request_body(transition, requestBody, response_object_value, operation_id)
-                    self.handle_parameters(transition, parameters, response_object_value, operation_id)
+                    self.handle_request_body(transition, operation_object_value, response_object_value, operation_id)
+                    self.handle_parameters(transition, operation_object_value, response_object_value, operation_id)
         
         self.create_link_arcs()
         self.remove_disconnected_transitions()
@@ -125,7 +123,8 @@ class OpenAPI2PetriNet:
 
         return False
 
-    def handle_request_body(self, transition, requestBody, response_object_value, operation_id):
+    def handle_request_body(self, transition, operation_object_value, response_object_value, operation_id):
+        requestBody = operation_object_value.get('requestBody')
         if (requestBody):
             content = requestBody.get('content')
             for contentKey, contentValue in content.items():
@@ -154,7 +153,8 @@ class OpenAPI2PetriNet:
                         return True
         return False
 
-    def handle_parameters(self, transition, parameters, response_object_value, operation_id):
+    def handle_parameters(self, transition, operation_object_value, response_object_value, operation_id):
+        parameters = operation_object_value.get('parameters')
         if (parameters):
             for parameter in parameters:
                 if self.is_paramenter_related_to_link(parameter, response_object_value, operation_id):
