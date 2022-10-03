@@ -1,7 +1,7 @@
 import snakes.plugins
 
 from replay.coloured_token import ColouredToken, RequestResponseToken
-from utils.constants import RESPONSE_BODY
+from utils.constants import RESPONSE_BODY, REQUEST_PATH
 from utils.log_utils import LogUtils
 from utils.string_utils import StringUtils
 
@@ -19,6 +19,19 @@ class OpenAPI2PetriNet:
     def __init__(self, openapi_path):
         self.parser = ResolvingParser(openapi_path)
 
+    def remove_disconnected_transitions(self):
+        to_delete = []
+        for transition_key, transition_value in list(self.petri_net._trans.items()):
+            if transition_value.pre == {} and transition_value.post == {}:
+                self.petri_net._trans.pop(transition_key)
+                self.petri_net._node.pop(transition_key)
+                to_delete.append(transition_key)
+
+        for node_value in list(self.petri_net.clusters._nodes):
+            if node_value in to_delete:
+                self.petri_net.clusters._nodes.remove(node_value)
+
+
     def create_petri_net(self, name):
         self.petri_net = PetriNet(name)
         petri_net = self.petri_net
@@ -28,21 +41,20 @@ class OpenAPI2PetriNet:
 
         for path_key, path_value in spec.get('paths').items():
             uri = path_key
-            # transition 1
-            # creating basic structure
-            # transition = self.create_transition_and_basic_places(petri_net, uri)
 
             # cheking the OperationObjects
             for operation_object_key, operation_object_value in path_value.items():
                 requestBody = operation_object_value.get('requestBody')
                 parameters = operation_object_value.get('parameters')
+                operation_id = operation_object_value.get('operationId')
                 for response_key, response_object_value in operation_object_value.get('responses').items():
                     transition = self.create_transition(uri, operation_object_key, response_key)
-
-                    self.handle_request_body(transition, requestBody)
-                    self.handle_parameters(transition, parameters)
+                    # create only places associated with link
+                    self.handle_request_body(transition, requestBody, response_object_value, operation_id)
+                    self.handle_parameters(transition, parameters, response_object_value, operation_id)
         
         self.create_link_arcs()
+        self.remove_disconnected_transitions()
         return petri_net
 
 
@@ -62,6 +74,7 @@ class OpenAPI2PetriNet:
                             # create arc to the following input
                             operation_id = link_value.get('operationId')
                             parameters_key_value = link_value.get('parameters')
+                            request_body_key_value = link_value.get('requestBody')
                             if parameters_key_value:
                                 ((parameter_id, parameter_value),) = parameters_key_value.items()
                                 nex_transition_name = OpenAPIUtils.get_transition_by_operation_id(spec, operation_id)
@@ -71,9 +84,48 @@ class OpenAPI2PetriNet:
                                 if RESPONSE_BODY in parameter_value:
                                     expression_str = f"request.get_token_from_reponse_body('{parameter_value.replace(RESPONSE_BODY, '')}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
+                                elif REQUEST_PATH in parameter_value:
+                                    # TODO: implement get_token_from_path
+                                    expression_str = f"request.get_token_from_path('{parameter_value.replace(REQUEST_PATH, '')}')"
+                                    self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
+                            elif request_body_key_value:
+                                ((request_body_id, request_body_value),) = request_body_key_value.items()
+                                nex_transition_name = OpenAPIUtils.get_transition_by_operation_id(spec, operation_id)
+                                input_place = OpenAPIUtils.get_place_by_name(
+                                    self.petri_net, OpenAPIUtils.create_place_name_to_parameter(request_body_id, nex_transition_name))
+
+                                if RESPONSE_BODY in request_body_value:
+                                    expression_str = f"request.get_token_from_reponse_body('{request_body_value.replace(RESPONSE_BODY, '')}')"
+                                    self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
+                                elif REQUEST_PATH in parameter_value:
+                                    # TODO: implement get_token_from_path
+                                    expression_str = f"request.get_token_from_path('{request_body_value.replace(REQUEST_PATH, '')}')"
+                                    self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 
 
-    def handle_request_body(self, transition, requestBody):
+    def is_request_body_related_to_link(self, property_name, response_object_value, operation_id):
+        # check if has a link
+        links = OpenAPIUtils.extract_links_from_response(response_object_value)
+        links.extend(OpenAPIUtils.extract_links_from_paths_object(self.parser))
+        for link in links:
+            for link_value in link.values():
+                local_operation_id = link_value.get('operationId')
+                parameters_key_value = link_value.get('parameters')
+                request_body_key_value = link_value.get('requestBody')
+                if local_operation_id == operation_id and parameters_key_value:
+                    ((parameter_id, parameter_value),) = parameters_key_value.items()
+                    if RESPONSE_BODY in parameter_value:
+                        if property_name in parameter_value:
+                            return True
+                elif local_operation_id == operation_id and request_body_key_value:
+                    ((request_body_id, request_body_value),) = request_body_key_value.items()
+                    if RESPONSE_BODY in request_body_value:
+                        if property_name in request_body_value:
+                            return True
+
+        return False
+
+    def handle_request_body(self, transition, requestBody, response_object_value, operation_id):
         if (requestBody):
             content = requestBody.get('content')
             for contentKey, contentValue in content.items():
@@ -85,12 +137,28 @@ class OpenAPI2PetriNet:
                         properties = schema.get('properties')
                         for property_key, property_value in properties.items():
                             property_name = property_key
-                            self.create_place_and_connect_as_input(transition, property_name)
+                            if self.is_request_body_related_to_link(property_name, response_object_value, operation_id):
+                                self.create_place_and_connect_as_input(transition, property_name)
 
-    def handle_parameters(self, transition, parameters):
+
+    def is_paramenter_related_to_link(self, property_name, response_object_value, operation_id):
+        links = OpenAPIUtils.extract_links_from_response(response_object_value)
+        links.extend(OpenAPIUtils.extract_links_from_paths_object(self.parser))
+        for link in links:
+            for link_value in link.values():
+                local_operation_id = link_value.get('operationId')
+                parameters_key_value = link_value.get('parameters')
+                if local_operation_id == operation_id and parameters_key_value:
+                    ((parameter_id, parameter_value),) = parameters_key_value.items()
+                    if property_name.get('name') in parameter_value:
+                        return True
+        return False
+
+    def handle_parameters(self, transition, parameters, response_object_value, operation_id):
         if (parameters):
             for parameter in parameters:
-                self.create_place_and_connect_as_input(transition, parameter.get('name'))
+                if self.is_paramenter_related_to_link(parameter, response_object_value, operation_id):
+                    self.create_place_and_connect_as_input(transition, parameter.get('name'))
 
     # this the response place
     def handle_responses_status_code(self, uri, transition, responses):
@@ -190,7 +258,7 @@ class OpenAPI2PetriNet:
 
 
     # TODO: extract data from url    
-    def create_binding_from_request_line(self, log_json_request_line):
+    def create_binding_from_request_line(self, log_json_request_line, force_str=False):
         binding = {}
         url = LogUtils.extract_uri_from_log(log_json_request_line)
         status_code = LogUtils.extract_status_code_from_log(log_json_request_line)
@@ -206,12 +274,15 @@ class OpenAPI2PetriNet:
             # check only in the first level if the variable_name is present
             # TODO: check object sublevels, for example, if we are looking for 'email', 
             # the object can be request_body.attribute1.obj2.email
-            variable_in_request_body = request_body.get(variable_name)
-            if variable_in_request_body != None:
+            variable_value_in_request_body = request_body.get(variable_name)
+            # TODO: ao inves de converter tudo pra str, tentar usar os tipos certos dos valores
+            if force_str:
+                variable_value_in_request_body = str(variable_value_in_request_body)
+            if variable_value_in_request_body != None:
                 binding[variable_name] = ColouredToken(
                     LogUtils.create_data_custom_from_log(
                         variable_name,
-                        variable_in_request_body,
+                        variable_value_in_request_body,
                         log_json_request_line
                         )
                     )

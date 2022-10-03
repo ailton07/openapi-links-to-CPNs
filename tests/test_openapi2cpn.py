@@ -28,14 +28,13 @@ def get_logs(logs_name):
     ("logs/combined_example_structural_problem.json",
      1,
      "Structural_Problem_Based_on_BOLA_Example.yaml",
-     '{\'email\': {"email":"email@email.com",\n"user_id":"::ffff:127.0.0.1"}, \'password\': {"password":"root123",\n"user_id":"::ffff:127.0.0.1"}, \'request\': {"uri":"/login",\n"method":"POST",\n"user_id":"::ffff:127.0.0....}'),
+     '{\'request\': {"uri":"/login",\n"method":"POST",\n"user_id":"::ffff:127.0.0....}'),
      ("logs/combined_example_structural_problem.json",
      3,
      "Structural_Problem_Based_on_BOLA_Example.yaml",
      '{\'id\': {"id":"6",\n"user_id":"::ffff:127.0.0.1"}, \'request\': {"uri":"/accounts/6",\n"method":"GET",\n"user_id":"::ffff:127....}')
 ])
 def test_create_binding_from_request_line(logs_name, line, filename, expected_result, get_logs, get_juice_shop_petri_net):
-    assert True == True
     log_line = get_logs[line]
     open_api_to_petri_parser, petri_net = get_juice_shop_petri_net
     binding = open_api_to_petri_parser.create_binding_from_request_line(

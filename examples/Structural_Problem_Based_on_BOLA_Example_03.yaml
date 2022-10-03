@@ -1,0 +1,156 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub JuiceShop API 
+    url: https://virtserver.swaggerhub.com/ailton07/JuiceShop/1.0.0
+info:
+  description: Neste exemplo, /login e /accounts aceitam o método POST. /accounts/{id} vira /accounts.
+  version: "1.0.0"
+  title: BOLA Example API Description
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Log-in
+    description: Log-in and get User
+paths:
+  /login:
+    post:
+      tags: ["Log-in"]
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/LoginUserResponse'
+          links:
+            getBasketById:
+              operationId: getAccountById
+              requestBody:
+                id: $response.body#/authentication.id
+    put:
+      tags: [ "Log-in" ]
+      operationId: getLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/LoginUserResponse'
+          links:
+            goToSignup:
+              operationId: signup
+  /signup:
+    post:
+      tags: [ "Signup" ]
+      operationId: signup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpUserRequest'
+      responses:
+        '200':
+          description: user created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/SignUpUserResponse'
+          # Nós devemos modelar apenas fluxos obrigatórios e não opcionais
+          # links:
+          #   goToLogin:
+          #     operationId: login
+          #     parameters:
+          #       email: $response.body#/email
+  /accounts:
+    post:
+      tags: ["Log-in"]
+      operationId: getAccountById
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAccountByIdRequest'
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/GetAccountByIdResponse'
+components:
+  schemas:
+    LoginUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    SignUpUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    LoginUserResponse:
+      type: object
+      properties:
+        authentication:
+          type: object
+          properties:
+            token:
+              type: string
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+            id:
+              type: integer
+              example: 69
+            umail:
+              type: integer
+              example: email@email.com
+    GetAccountByIdResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 69
+            name:
+              type: string
+              example: "I'm a User"
+    SignUpUserResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    GetAccountByIdRequest:
+      type: object
+      properties:
+        id:
+          type: string

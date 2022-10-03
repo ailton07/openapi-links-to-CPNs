@@ -78,6 +78,31 @@ class OpenAPIUtils:
 
 
     @staticmethod
+    def extract_links_from_paths_object(parser):
+        """ Returns all the links of and OpenAPI Specification. 
+        Receives a OpenAPI parser, in other words, a object where the keys are paths
+        and the values are Path Item Object. Returns a list of links
+
+        Args:
+            responses (list): List of responses. 
+            Ex: {'200': {'description': 'search results match...g criteria', 'content': {...}, 'links': {...}}, '404': {'description': 'user not found', 'content': {...}, 'links': {...}}}
+
+        Returns:
+            list: A list of links. Ex: [{'getBasketById': {...}}, {'goToSignup': {...}}]
+        """
+        links_set = []
+        if (parser):
+            for path_key, path_item_object_value in parser.specification.get('paths').items():
+                for operation_object_key, operation_object_value in path_item_object_value.items():
+                    responses_object = operation_object_value.get('responses')
+                    for status_code_key, response_object_value in responses_object.items():
+                        links = response_object_value.get('links')
+                        if links:
+                            links_set.append(links)
+        return links_set
+
+
+    @staticmethod
     def extract_links_from_response(response):
         """Receives a Response Object and returns a list of links
 
