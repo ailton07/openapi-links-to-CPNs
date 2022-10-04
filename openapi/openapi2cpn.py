@@ -103,7 +103,7 @@ class OpenAPI2PetriNet:
 
     def is_request_body_related_to_link(self, property_name, response_object_value, operation_id):
         # check if has a link
-        links = OpenAPIUtils.extract_links_from_response(response_object_value)
+        links = []
         links.extend(OpenAPIUtils.extract_links_from_paths_object(self.parser))
         for link in links:
             for link_value in link.values():
