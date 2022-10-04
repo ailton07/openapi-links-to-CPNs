@@ -101,7 +101,7 @@ class OpenAPI2PetriNet:
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 
 
-    def is_request_body_related_to_link(self, property_name, response_object_value, operation_id):
+    def is_request_body_related_to_link(self, property_name, operation_id):
         # check if has a link
         links = []
         links.extend(OpenAPIUtils.extract_links_from_paths_object(self.parser))
@@ -136,7 +136,7 @@ class OpenAPI2PetriNet:
                         properties = schema.get('properties')
                         for property_key, property_value in properties.items():
                             property_name = property_key
-                            if self.is_request_body_related_to_link(property_name, response_object_value, operation_id):
+                            if self.is_request_body_related_to_link(property_name, operation_id):
                                 self.create_place_and_connect_as_input(transition, property_name)
 
 
