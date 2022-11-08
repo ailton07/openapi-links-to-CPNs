@@ -37,7 +37,10 @@ class LogUtils:
 
     @staticmethod
     def extract_uri_from_log(log_json):
-        return log_json.get('uri')
+        uri = log_json.get('uri')
+        if uri[-1] == '/':
+            uri = uri[:-1]
+        return str.lower(uri)
 
     @staticmethod
     def extract_method_from_log(log_json):

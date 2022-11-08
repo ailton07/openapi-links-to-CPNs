@@ -118,7 +118,7 @@ class OpenAPI2PetriNet:
                 elif local_operation_id == operation_id and request_body_key_value:
                     ((request_body_id, request_body_value),) = request_body_key_value.items()
                     if RESPONSE_BODY in request_body_value:
-                        if property_name in request_body_value:
+                        if property_name in request_body_value or property_name in request_body_id:
                             return True
 
         return False
@@ -259,6 +259,15 @@ class OpenAPI2PetriNet:
 
     # TODO: extract data from url    
     def create_binding_from_request_line(self, log_json_request_line, force_str=False):
+        """_summary_
+
+        Args:
+            log_json_request_line (_type_): força tipos para str
+            force_str (bool, optional): _description_. Defaults to False.
+
+        Returns:
+            _type_: _description_
+        """
         binding = {}
         url = LogUtils.extract_uri_from_log(log_json_request_line)
         status_code = LogUtils.extract_status_code_from_log(log_json_request_line)
@@ -316,9 +325,9 @@ class OpenAPI2PetriNet:
         url = LogUtils.extract_uri_from_log(log_line)
         method = LogUtils.extract_method_from_log(log_line)
         status_code = LogUtils.extract_status_code_from_log(log_line)
+        calculated_transition_name = OpenAPIUtils.create_transition_name(method, url, status_code)
 
         for transition in transitions:
-            calculated_transition_name = OpenAPIUtils.create_transition_name(method, url, status_code)
             if StringUtils.compare_uri_with_model(transition.name, calculated_transition_name):
                 return transition
         return None

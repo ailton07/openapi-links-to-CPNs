@@ -1,10 +1,11 @@
 # openapi-links-to-CPNs
-Use the library Snakes to model OpenAPI data-flows (Links)
+Use the library Snakes to create CPNs modeling OpenAPI data-flows (Links)
 
 
-## Examples
+## Example Cases
 
-In ```logs/combined_example_structural_problem.json```, we have an example of an API in normal usage. While in ```logs/combined_example_structural_problem_BOLA_case.json``` we have an example of an API under a BOLA attack.
+In ```logs/combined_example_structural_problem.json```, we have an example of an API in normal usage. The OpenAPI Specification associated is ```examples/Structural_Problem_Based_on_BOLA_Example.yaml```.
+While in ```logs/combined_example_structural_problem_BOLA_case.json``` we have an example of an API under a BOLA attack.
 
 
 
