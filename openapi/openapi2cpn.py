@@ -80,11 +80,11 @@ class OpenAPI2PetriNet:
                                     self.petri_net, OpenAPIUtils.create_place_name_to_parameter(parameter_id, nex_transition_name))
 
                                 if RESPONSE_BODY in parameter_value:
-                                    expression_str = f"request.get_token_from_reponse_body('{parameter_value.replace(RESPONSE_BODY, '')}')"
+                                    expression_str = f"request.get_token_from_reponse_body('{parameter_value.replace(RESPONSE_BODY, '')}', '{parameter_id}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 elif REQUEST_PATH in parameter_value:
                                     # TODO: implement get_token_from_path
-                                    expression_str = f"request.get_token_from_path('{parameter_value.replace(REQUEST_PATH, '')}')"
+                                    expression_str = f"request.get_token_from_path('{parameter_value.replace(REQUEST_PATH, '')}', '{parameter_id}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                             elif request_body_key_value:
                                 ((request_body_id, request_body_value),) = request_body_key_value.items()
@@ -93,11 +93,11 @@ class OpenAPI2PetriNet:
                                     self.petri_net, OpenAPIUtils.create_place_name_to_parameter(request_body_id, nex_transition_name))
 
                                 if RESPONSE_BODY in request_body_value:
-                                    expression_str = f"request.get_token_from_reponse_body('{request_body_value.replace(RESPONSE_BODY, '')}')"
+                                    expression_str = f"request.get_token_from_reponse_body('{request_body_value.replace(RESPONSE_BODY, '')}', '{request_body_id}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 elif REQUEST_PATH in parameter_value:
                                     # TODO: implement get_token_from_path
-                                    expression_str = f"request.get_token_from_path('{request_body_value.replace(REQUEST_PATH, '')}')"
+                                    expression_str = f"request.get_token_from_path('{request_body_value.replace(REQUEST_PATH, '')}', '{request_body_id}')"
                                     self.petri_net.add_output(input_place.name, transition.name, Expression(expression_str))
                                 
 
@@ -284,7 +284,6 @@ class OpenAPI2PetriNet:
             # TODO: check object sublevels, for example, if we are looking for 'email', 
             # the object can be request_body.attribute1.obj2.email
             variable_value_in_request_body = request_body.get(variable_name)
-            # TODO: ao inves de converter tudo pra str, tentar usar os tipos certos dos valores
             if force_str:
                 variable_value_in_request_body = str(variable_value_in_request_body)
             if variable_value_in_request_body != None:

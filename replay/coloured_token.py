@@ -78,12 +78,15 @@ class RequestResponseToken(ColouredToken):
             return key, str(response)
         return element, str(json.loads(self.response_body).get('response_body').get(element))
 
-    def _get_key_value_from_response_body(self, element):
+    def _get_key_value_from_response_body(self, element, new_name=None):
         key, response = self._get_from_reponse_body(element)
-        return {key : response}
+        if new_name:
+            return {new_name : response}
+        else:
+            return {key : response}
 
-    def get_token_from_reponse_body (self, element):
-        result = self._get_key_value_from_response_body (element)
+    def get_token_from_reponse_body (self, element, new_name=None):
+        result = self._get_key_value_from_response_body (element, new_name)
         result[USER_IDENTIFICATION] = self.user_id
         return ColouredToken(result)
 
