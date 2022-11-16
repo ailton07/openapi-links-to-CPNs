@@ -49,7 +49,6 @@ class Replay:
             except ValueError as exception:
                 print(f'Fire error, line {line_number}:  {exception}')
                 continue
-            #draws[f"line-{line_number}-fire-line.png"] = petri_net.draw(f"line-{line_number}-fire-line.png")
             DrawUtils.draw(draws, f"line-{line_number}-fire-line.png", petri_net)
 
         return draws

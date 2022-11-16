@@ -174,13 +174,6 @@ class OpenAPI2PetriNet:
                             self.petri_net.add_place(place)
                             self.petri_net.add_output(place.name, transition.name, Expression("request.get_response()"))
 
-    # def create_transition(self, uri, operation_object_key):
-    #     # creating transition
-    #     transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri))
-    #     # conecting the transtion with the CPN
-    #     self.petri_net.add_transition(transition)
-    #     return transition
-
     def create_transition(self, uri, operation_object_key, status_code):
         # creating transition
         transition = Transition(OpenAPIUtils.create_transition_name(operation_object_key, uri, status_code))
