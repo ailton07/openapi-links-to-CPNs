@@ -1,11 +1,15 @@
 import snakes.plugins
+import utils.infinite_transition as infinite_transition
 
 from replay.coloured_token import ColouredToken, RequestResponseToken
 from utils.constants import RESPONSE_BODY, REQUEST_PATH
 from utils.log_utils import LogUtils
 from utils.string_utils import StringUtils
 
-snakes.plugins.load("gv", "snakes.nets", "nets")
+# opção para debug. Com essa opção ativa, as transições consomem os tokens da entrada
+#snakes.plugins.load("gv", "snakes.nets", "nets")
+# importing plugins https://github.com/fpom/snakes/issues/22#issuecomment-784977089
+snakes.plugins.load(["gv", infinite_transition], "snakes.nets", "nets")
 from prance import ResolvingParser
 from nets import PetriNet, Place, Expression, Transition, Variable  # added here to mute warnings
 from utils.openapi_utils import OpenAPIUtils

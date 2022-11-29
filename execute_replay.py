@@ -10,8 +10,9 @@ from replay.replay import Replay
 #OPENAPI_PATH, LOGS_PATH = 'examples/BOLA_Example.yaml', 'logs/combined_bola_example.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login_multiuser.json'
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/log_signup_login_basket_with_false_positive.log'
-#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/logs_OWASP_Juic_Shop_BOLA_cases_manipulate_basket.log'
-OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_logs_juice_shop_signup_view_basket.log'
+#OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_logs_juice_shop_signup_view_basket.log'
+# a vulnerabilidade é explorada por HTTP Parameter Pollution
+OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/combined_logs_Juic_Shop_manipulate_basket.log'
 
 parser = argparse.ArgumentParser(description='Execute the replay of logs on OpenAPI Specifications')
 parser.add_argument('open_api_path',
