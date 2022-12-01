@@ -1,15 +1,7 @@
 import argparse
 from replay.replay import Replay
 
-#OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
-#OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_02.yaml', 'logs/combined_example_structural_problem.json'
-#OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example_03.yaml', 'logs/combined_example_structural_problem_example_03.json'
-
-# Juice Shop Cases
-#OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login.json'
-#OPENAPI_PATH, LOGS_PATH = 'examples/BOLA_Example.yaml', 'logs/combined_bola_example.json'
-#OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_login_multiuser.json'
-#OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/log_signup_login_basket_with_false_positive.log'
+# Important examples
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/combined_logs_juice_shop_signup_view_basket.log'
 # a vulnerabilidade é explorada por HTTP Parameter Pollution
 OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/combined_logs_Juic_Shop_manipulate_basket.log'
@@ -25,37 +17,13 @@ parser.add_argument('logs_path',
                        help='the path to the log file')
 
 def main():
+    openapi_path, logs_path = vars(parser.parse_args()).values()
+    if openapi_path and logs_path:
+        Replay.replay_execution_on_log(openapi_path, logs_path)
+        return None
+    print("Positional arguments open_api_path and/or logs_path not found")
     Replay.replay_execution_on_log(OPENAPI_PATH, LOGS_PATH)
     return None
-    openapi_path, logs_path = vars(parser.parse_args()).values()
-    Replay.replay_execution_on_log(openapi_path, logs_path)
-    return None
-
-# def main():
-#     open_api_to_petri_parser = OpenAPI2PetriNet(OPENAPI_PATH)
-#     petri_net = open_api_to_petri_parser.create_petri_net('Juice Shop')
-#     transitions = petri_net.transition()
-#     petri_net.draw("value-0.png")
-
-#     log_line = logs_json[1]
-#     open_api_to_petri_parser.fill_input_places(log_line)
-#     petri_net.draw("value-0.png")
-
-#     fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
-#     transition = open_api_to_petri_parser.get_transition_from_log_line(log_line)
-#     transition.fire(Substitution(fire_object))
-#     petri_net.draw("value-0.png")
-
-#     log_line = logs_json[3]
-#     open_api_to_petri_parser.fill_input_places(log_line)
-#     petri_net.draw("value-0.png")
-
-#     fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
-#     transition = open_api_to_petri_parser.get_transition_from_log_line(log_line)
-#     transition.fire(Substitution(fire_object))
-#     petri_net.draw("value-0.png")
-#     petri_net.draw("value-0.png")
-
 
 if __name__ == "__main__":
     main()
