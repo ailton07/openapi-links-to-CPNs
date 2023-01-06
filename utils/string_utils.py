@@ -53,3 +53,8 @@ class StringUtils:
         else:
             return result
         return result
+
+
+    @staticmethod
+    def format_line_number(line_number):
+        return line_number + 1

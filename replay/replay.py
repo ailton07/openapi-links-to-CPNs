@@ -3,6 +3,7 @@ import snakes.plugins
 from openapi.openapi2cpn import OpenAPI2PetriNet
 from utils.log_utils import LogUtils
 from utils.draw_utils import DrawUtils
+from utils.string_utils import StringUtils
 
 snakes.plugins.load("gv", "snakes.nets", "nets")
 from nets import Substitution  # added here to mute warnings
@@ -34,7 +35,7 @@ class Replay:
             
             transition = open_api_to_petri_parser.get_transition_from_log_line(log_line)
             if transition == None:
-                print(f'Line {line_number} is not present in the model: {log_line.get("message")}')
+                print(f'Line {StringUtils.format_line_number(line_number)} is not present in the model: {log_line.get("message")}')
                 continue
 
             fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line)
@@ -47,8 +48,8 @@ class Replay:
                     fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line, True)
                     transition.fire(Substitution(fire_object))
             except ValueError as exception:
-                print(f'Fire error, line {line_number}:  {exception}')
+                print(f'Fire error, line {StringUtils.format_line_number(line_number)}:  {exception}')
                 continue
-            DrawUtils.draw(draws, f"line-{line_number}-fire-line.png", petri_net)
+            DrawUtils.draw(draws, f"line-{StringUtils.format_line_number(line_number)}-fire-line.png", petri_net)
 
         return draws
