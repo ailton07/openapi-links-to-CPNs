@@ -15,7 +15,7 @@
             // Normal usage
             //"args": [ "examples/Structural_Problem_Based_on_BOLA_Example_02.yaml",  "logs/combined_example_structural_problem.json"]
             // Attack
-            //"args": [ "examples/Structural_Problem_Based_on_BOLA_Example_02.yaml",  "logs/combined_example_structural_problem_BOLA_case.json"]
+            //"args": [ "examples/JuiceShop.yaml", "logs/real_logs_juice_shop_signup_view_basket.log"]
             "args": []
         }
     ]

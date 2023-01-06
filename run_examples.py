@@ -24,10 +24,10 @@ EXECUTABLE = "execute_replay.py"
 #OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/real_log_signup_login_basket.log.log'
 
 # /rest/basket/{bid} and /rest/user/login, attack scenario view basket, but app running in AWS
-#OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/real_logs_juice_shop_signup_view_basket.log'
+OPENAPI_PATH, LOGS_PATH = 'examples/JuiceShop.yaml', 'logs/real_logs_juice_shop_signup_view_basket.log'
 
 # /rest/basket/{bid} and /rest/user/login, attack exploring HTTP Parameter Pollution
-OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/combined_logs_Juic_Shop_manipulate_basket.log'
+#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/combined_logs_Juic_Shop_manipulate_basket.log'
 
 
 def main():
