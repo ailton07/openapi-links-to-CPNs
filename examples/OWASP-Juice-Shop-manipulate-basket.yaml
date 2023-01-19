@@ -1,0 +1,122 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/ailton07/OWASP-Juice-Shop-BOLA-cases/1.0.0
+  - description: SwaggerHub JuiceShop API 
+    url: https://virtserver.swaggerhub.com/ailton07/JuiceShop/1.0.0
+info:
+  description: OWASP Juice Shop - BOLA cases
+  version: "1.0.0"
+  title: OWASP Juice Shop - BOLA cases
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Log-in
+    description: Log-in and get User
+paths:
+  /rest/user/login:
+    post:
+      tags: ["Log-in"]
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/LoginUserResponse'
+          links:
+            postBasketItems:
+              operationId: postBasketItems
+              requestBody:
+                BasketId: $response.body#/authentication.bid
+  /api/BasketItems:
+    post:
+      tags: ["Post BasketItems"]
+      operationId: postBasketItems
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostBasketItemsRequest'
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/PostBasketItemsResponse'
+components:
+  schemas:
+    PostBasketItemsRequest:
+      type: object
+      properties:
+        ProductId:
+          type: integer
+        BasketId:
+          type: string
+        quantity:
+          type: integer
+    PostBasketItemsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            ProductId:
+              type: integer
+            BasketId:
+              type: string
+            quantity:
+              type: integer
+    LoginUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    LoginUserResponse:
+      type: object
+      properties:
+        authentication:
+          type: object
+          properties:
+            token:
+              type: string
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+            bid:
+              type: integer
+              example: 69
+            umail:
+              type: integer
+              example: email@email.com
+    GetAccountByIdResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 69
+            name:
+              type: string
+              example: "I'm a User"

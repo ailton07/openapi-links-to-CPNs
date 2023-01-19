@@ -29,8 +29,11 @@ EXECUTABLE = "execute_replay.py"
 # /rest/basket/{bid} and /rest/user/login, attack exploring HTTP Parameter Pollution, created artificially
 #OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/combined_logs_Juic_Shop_manipulate_basket.log'
 
+# /rest/basket/{bid} and /rest/user/login, attack exploring HTTP Parameter Pollution, real log, at the logs, it's shown only one BasketId (the last one), complete OpenAPI
+# OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/real_log_Juice_Shop_manipulate_basket.log'
+
 # /rest/basket/{bid} and /rest/user/login, attack exploring HTTP Parameter Pollution, real log, at the logs, it's shown only one BasketId (the last one)
-OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/real_log_Juice_Shop_manipulate_basket.log'
+OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-manipulate-basket.yaml', 'logs/real_log_Juice_Shop_manipulate_basket.log'
 
 
 def main():
