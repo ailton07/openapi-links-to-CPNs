@@ -48,7 +48,8 @@ class Replay:
                     fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line, True)
                     transition.fire(Substitution(fire_object))
             except ValueError as exception:
-                print(f'Fire error, line {StringUtils.format_line_number(line_number)}:  {exception}')
+                print(f'Fire error, Line {StringUtils.format_line_number(line_number)}: {log_line.get("message")}')
+                print(f'{exception}')
                 continue
             DrawUtils.draw(draws, f"line-{StringUtils.format_line_number(line_number)}-fire-line.png", petri_net)
 
