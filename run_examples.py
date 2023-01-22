@@ -33,7 +33,11 @@ EXECUTABLE = "execute_replay.py"
 # OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-BOLA-cases.yaml', 'logs/real_log_Juice_Shop_manipulate_basket.log'
 
 # /rest/basket/{bid} and /rest/user/login, attack exploring HTTP Parameter Pollution, real log, at the logs, it's shown only one BasketId (the last one)
-OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-manipulate-basket.yaml', 'logs/real_log_Juice_Shop_manipulate_basket.log'
+#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-manipulate-basket.yaml', 'logs/real_log_Juice_Shop_manipulate_basket.log'
+
+# Juice Shop experiment with 2 challenges, failing manipulate basket (not using Parameter Pollution)
+# TODO: esse é um caso interessante, pq a linha Line 47 não foi identificada como parte do modelo
+OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment_failing_manipulate_basket.log'
 
 
 def main():
