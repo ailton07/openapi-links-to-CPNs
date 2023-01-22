@@ -37,7 +37,10 @@ EXECUTABLE = "execute_replay.py"
 
 # Juice Shop experiment with 2 challenges, failing manipulate basket (not using Parameter Pollution)
 # TODO: esse é um caso interessante, pq a linha Line 47 não foi identificada como parte do modelo
-OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment_failing_manipulate_basket.log'
+#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment_failing_manipulate_basket.log'
+
+# Juice Shop experiment with 2 challenges
+OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment.log'
 
 
 def main():
