@@ -4,23 +4,27 @@ from utils.string_utils import StringUtils
 
 
 class LogUtils:
+
+    USER_IDENTIFICATION = 'ip'
+    #USER_IDENTIFICATION = 'headerAuthorization'
+
     @staticmethod
     def create_data_from_request_body_in_log(log_json, parameter):
         return {
             parameter: log_json.get('requestBody').get(parameter),
-            'user_id': log_json.get('ip')
+            'user_id': log_json.get(LogUtils.USER_IDENTIFICATION)
         }
 
     @staticmethod
     def create_data_custom_from_log(parameter, value, log_json):
         return {
             parameter: value,
-            'user_id': log_json.get('ip')
+            'user_id': log_json.get(LogUtils.USER_IDENTIFICATION)
         }
 
     @staticmethod
     def create_data_custom_from_log_with_dict(dict, log_json):
-        dict['user_id'] =  log_json.get('ip')
+        dict['user_id'] =  log_json.get(LogUtils.USER_IDENTIFICATION)
         return dict
 
     @staticmethod
@@ -81,17 +85,17 @@ class LogUtils:
             return {
                        'uri': log_json.get('uri'),
                        'method': log_json.get('method'),
-                       'user_id': log_json.get('ip')
+                       'user_id': log_json.get(LogUtils.USER_IDENTIFICATION)
                    }, {
                        'response_body': log_json.get('responseBody'),
-                       'user_id': log_json.get('ip')
+                       'user_id': log_json.get(LogUtils.USER_IDENTIFICATION)
                    }, log_json.get('statusCode')
 
     @staticmethod
     def create_response_data_from_log(log_json, parameter):
         return {
             parameter:log_json.get('responseBody').get(parameter), 
-            'user_id':log_json.get('ip')
+            'user_id':log_json.get(LogUtils.USER_IDENTIFICATION)
             }   
 
 
