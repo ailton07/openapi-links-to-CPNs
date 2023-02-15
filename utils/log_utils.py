@@ -7,8 +7,8 @@ class LogUtils:
     USER_IDENTIFICATION_AUTH = 'headerAuthorization'
     USER_IDENTIFICATION_IP = 'ip'
 
-    USER_IDENTIFICATION = USER_IDENTIFICATION_IP
-    #USER_IDENTIFICATION = USER_IDENTIFICATION_AUTH
+    #USER_IDENTIFICATION = USER_IDENTIFICATION_IP
+    USER_IDENTIFICATION = USER_IDENTIFICATION_AUTH
 
     @staticmethod
     def get_user_identification(log_json):
@@ -17,7 +17,13 @@ class LogUtils:
         else:
             if log_json.get(LogUtils.USER_IDENTIFICATION):
                 return log_json.get(LogUtils.USER_IDENTIFICATION).replace('Bearer ', '')
-            return log_json.get('responseBody').get('authentication').get('token').replace('Bearer ', '')
+            # this try catch is necessary to capture cases where the request doest have token
+            # ex: "responseBody":{"error":{"message":"No Authorization header was found","name":"UnauthorizedError","code":"credentials_required","status":401}}
+            try:
+                return log_json.get('responseBody').get('authentication').get('token').replace('Bearer ', '')
+            except:
+                return ""
+
 
     @staticmethod
     def create_data_from_request_body_in_log(log_json, parameter):
