@@ -40,11 +40,15 @@ EXECUTABLE = "execute_replay.py"
 #OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment_failing_manipulate_basket.log'
 
 # Juice Shop experiment with 2 challenges
-OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment.log'
+#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment.log'
+
+# experiments with students
+#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', '20220125-01-00_combined.log.txt'
+OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', '20220125-18-30_combined-2.log.txt'
 
 
 def main():
-    os.system(f'python3 {EXECUTABLE} {OPENAPI_PATH} {LOGS_PATH}')
+    os.system(f'python3 {EXECUTABLE} {OPENAPI_PATH} {LOGS_PATH} > output.txt')
 
 
 

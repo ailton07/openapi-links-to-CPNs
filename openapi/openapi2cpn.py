@@ -324,7 +324,8 @@ class OpenAPI2PetriNet:
         calculated_transition_name = OpenAPIUtils.create_transition_name(method, url, status_code)
 
         for transition in transitions:
-            if StringUtils.compare_uri_with_model(transition.name, calculated_transition_name):
+            if StringUtils.compare_uri_with_model(transition.name, calculated_transition_name) \
+                and OpenAPIUtils.get_status_code_from_transition(transition) == status_code:
                 return transition
         return None
 

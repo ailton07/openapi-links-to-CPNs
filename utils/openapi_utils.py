@@ -119,6 +119,23 @@ class OpenAPIUtils:
             if links:
                 links_set.append(links)
         return links_set
+    
+    
+    @staticmethod
+    def get_status_code_from_transition(transition):
+        """Receives a Transition object and extracts the Status Code in its name.
+        Ex: Given the transiton get-/rest/basket/{bid}-200, returns 200.
+
+        Args:
+            transition (Transition): A transition object
+
+        Returns:
+            String: The Status Code in the transition name.
+        """
+        transition_name = transition.name
+        transition_splited = transition_name.split('-')
+        last_element = transition_splited[-1]
+        return last_element
 
 
     def get_transition_by_operation_id(spec, operation_id):
