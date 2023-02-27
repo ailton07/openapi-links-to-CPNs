@@ -1,6 +1,22 @@
-# openapi-links-to-CPNs
+# Openapi Links to CPNs
 Use the library Snakes to create CPNs modeling OpenAPI data-flows (Links)
 
+
+## Installation
+```
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+(Tested with Python 3.9)
+
+## Usage
+```
+python3 run_examples.py
+
+python3 execute_replay.py examples/OWASP-Juice-Shop-experiment.yaml logs/real_logs_experiment.log
+
+```
 
 ## Example Cases
 
