@@ -13,7 +13,6 @@ pip3 install -r requirements.txt
 ## Usage
 ```
 python3 run_examples.py
-
 python3 execute_replay.py examples/OWASP-Juice-Shop-experiment.yaml logs/real_logs_experiment.log
 
 ```
