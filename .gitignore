@@ -128,4 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+## Customs ##
 .DS_Store
+
+# Experiments
+logs_experiment_with_students/
+find_in_logs.output.txt
+run_examples.output.txt

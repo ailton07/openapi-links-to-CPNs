@@ -6,12 +6,14 @@ import json
 """
 
 OUTPUT_FILE = 'logs_tools/find_in_logs.output.txt'
-FILE = '/Users/ailton/Projects/openapi-links-to-CPNs/20220125-01-00_combined.log.txt'
+FILE = 'logs_experiment_with_students/20220127-00-00_combined-2.log.txt'
 
-email = ''
-token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MjEsInVzZXJuYW1lIjoiIiwiZW1haWwiOiJuZXRvQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMDlhNjEyZWNlNGI3ODkzYzExZWY0ZmI2MmMzZTdjYmYi'
+email = 'jose.mateus@sr.com'
+#token = 'eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MjMsInVzZXJuYW1lIjoiIiwiZW1haWwiOiJqb25lcm1lbGxvQGhvdG1haWwuY29tIiwicGFzc3dvcmQi'
+#token = 'eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MjQsInVzZXJuYW1lIjoiIiwiZW1haWwiOiJqbS5hc3NvbGltQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoi'
+
 # n de logins
-#STR_1, STR_2 = email, 'POST /rest/user/login'
+STR_1, STR_2 = email, 'POST /rest/user/login'
 # n de requisições
 #STR_1, STR_2 = '', token
 # case 1
@@ -19,7 +21,7 @@ token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YS
 # case 1: legitimous requests
 #STR_1, STR_2 = 'GET /rest/basket/6', token
 # case 2
-STR_1, STR_2 = 'POST /api/BasketItems/', token
+#STR_1, STR_2 = 'POST /api/BasketItems/', token
 
 
 def main():
@@ -35,7 +37,9 @@ def main():
                 print(line)
                 try:
                     extract_data(tokens, ips, line)
-                except:
+                except Exception as e:
+                    print (f'Exception in line {line_number}: {e}')
+                    line_number += 1
                     continue
             line_number += 1
             
