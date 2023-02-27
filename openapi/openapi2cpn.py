@@ -320,7 +320,7 @@ class OpenAPI2PetriNet:
         transitions = self.petri_net.transition()
         url = LogUtils.extract_uri_from_log(log_line)
         method = LogUtils.extract_method_from_log(log_line)
-        status_code = LogUtils.extract_status_code_from_log(log_line)
+        status_code = LogUtils.extract_status_code_str_from_log(log_line)
         calculated_transition_name = OpenAPIUtils.create_transition_name(method, url, status_code)
 
         for transition in transitions:

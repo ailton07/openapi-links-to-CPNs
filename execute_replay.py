@@ -1,4 +1,5 @@
 import argparse
+import time
 from replay.replay import Replay
 from utils.draw_utils import DrawUtils
 
@@ -18,12 +19,16 @@ parser.add_argument('logs_path',
                        help='the path to the log file')
 
 def main():
+    started_at = time.time()
     # clean output directory
     DrawUtils.clean_draw_dir()
+    print ('Processing...')
     # start the processment
     openapi_path, logs_path = vars(parser.parse_args()).values()
     if openapi_path and logs_path:
         Replay.replay_execution_on_log(openapi_path, logs_path)
+        done_at = time.time()
+        print (f'Done in {done_at - started_at} seconds')
         return None
     print("Positional arguments open_api_path and/or logs_path not found")
     return None

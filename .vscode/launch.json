@@ -18,8 +18,8 @@
             //"args": [ "examples/JuiceShop.yaml", "logs/real_logs_juice_shop_signup_view_basket.log"]
             // real_logs_experiment.log
             // "args": ["examples/OWASP-Juice-Shop-experiment.yaml", "logs/real_logs_experiment.log"]
-            // "args": ["examples/OWASP-Juice-Shop-experiment.yaml", "20220125-01-00_combined.log.txt"]
-            "args": ["examples/OWASP-Juice-Shop-experiment.yaml", "20220125-18-30_combined-2.log.txt"]
+            "args": ["examples/OWASP-Juice-Shop-experiment.yaml", "20220125-01-00_combined.log.txt"]
+            //"args": ["examples/OWASP-Juice-Shop-experiment.yaml", "20220125-18-30_combined-2.log.txt"]
             //"args": []
         }
     ]

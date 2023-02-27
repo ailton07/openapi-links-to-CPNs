@@ -70,6 +70,10 @@ class LogUtils:
     @staticmethod
     def extract_status_code_from_log(log_json):
         return log_json.get('statusCode')
+    
+    @staticmethod
+    def extract_status_code_str_from_log(log_json):
+        return str(log_json.get('statusCode'))
 
     # TODO: check URLs with multiple values
     @staticmethod

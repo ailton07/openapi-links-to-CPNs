@@ -43,12 +43,12 @@ EXECUTABLE = "execute_replay.py"
 #OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', 'logs/real_logs_experiment.log'
 
 # experiments with students
-#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', '20220125-01-00_combined.log.txt'
-OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', '20220125-18-30_combined-2.log.txt'
+OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', '20220125-01-00_combined.log.txt'
+#OPENAPI_PATH, LOGS_PATH = 'examples/OWASP-Juice-Shop-experiment.yaml', '20220125-18-30_combined-2.log.txt'
 
 
 def main():
-    os.system(f'python3 {EXECUTABLE} {OPENAPI_PATH} {LOGS_PATH} > output.txt')
+    os.system(f'python3 {EXECUTABLE} {OPENAPI_PATH} {LOGS_PATH} > run_examples.output.txt')
 
 
 
