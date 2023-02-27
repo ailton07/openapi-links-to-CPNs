@@ -148,4 +148,6 @@ class LogUtils:
                     parsed_line_json = json.loads(line)
                     logs_json.append(parsed_line_json)
         logs_file.close()
-        return logs_json
+        if isinstance(logs_json, list):
+            return logs_json
+        return [logs_json]
