@@ -47,7 +47,7 @@ class Replay:
                 except ValueError as exception:
                     fire_object = open_api_to_petri_parser.create_binding_from_request_line(log_line, True)
                     transition.fire(Substitution(fire_object))
-            except ValueError as exception:
+            except Exception as exception:
                 print(f'Fire error, Line {StringUtils.format_line_number(line_number)}: {log_line.get("message")}')
                 print(f'{exception}')
                 continue
