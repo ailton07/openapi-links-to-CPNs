@@ -1,7 +1,11 @@
 from contextlib import redirect_stdout
 import json
 
-OUTPUT_FILE = 'find_in_logs.output.txt'
+""" 
+    auxiliar script to analyze logs
+"""
+
+OUTPUT_FILE = 'logs_tools/find_in_logs.output.txt'
 FILE = '/Users/ailton/Projects/openapi-links-to-CPNs/20220125-01-00_combined.log.txt'
 
 email = ''
@@ -11,11 +15,11 @@ token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YS
 # n de requisições
 #STR_1, STR_2 = '', token
 # case 1
-STR_1, STR_2 = 'GET /rest/basket/', token
+#STR_1, STR_2 = 'GET /rest/basket/', token
 # case 1: legitimous requests
 #STR_1, STR_2 = 'GET /rest/basket/6', token
 # case 2
-#STR_1, STR_2 = 'POST /api/BasketItems/', token
+STR_1, STR_2 = 'POST /api/BasketItems/', token
 
 
 def main():
