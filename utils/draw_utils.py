@@ -18,6 +18,9 @@ class DrawUtils:
     @staticmethod
     def clean_draw_dir():
         print(f'Cleaning draw_dir: {DrawUtils.DRAWS_DIR}')
+        if (os.path.exists(DrawUtils.DRAWS_DIR) == False):
+            os.makedirs(DrawUtils.DRAWS_DIR)
+            return
         for filename in os.listdir(DrawUtils.DRAWS_DIR):
             file_path = os.path.join(DrawUtils.DRAWS_DIR, filename)
             try:
