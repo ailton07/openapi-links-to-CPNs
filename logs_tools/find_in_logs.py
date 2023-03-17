@@ -2,15 +2,17 @@ from contextlib import redirect_stdout
 import json
 
 """ 
-    auxiliar script to analyze logs
+    This file is an auxiliar script to analyze logs
 """
 
 OUTPUT_FILE = 'logs_tools/find_in_logs.output.txt'
-FILE = 'logs_experiment_with_students/20220127-00-00_combined-2.log.txt'
+FILE = ''
+#FILE = 'logs_experiment_with_students/20220125-01-00_combined.log.txt'
+#FILE = 'logs_experiment_with_students/20220127-00-00_combined-2.log.txt'
+#FILE = 'logs_experiment_with_students/20220207-13-44_combined-3.log.txt'
 
-email = 'jose.mateus@sr.com'
-#token = 'eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MjMsInVzZXJuYW1lIjoiIiwiZW1haWwiOiJqb25lcm1lbGxvQGhvdG1haWwuY29tIiwicGFzc3dvcmQi'
-#token = 'eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MjQsInVzZXJuYW1lIjoiIiwiZW1haWwiOiJqbS5hc3NvbGltQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoi'
+email = ''
+token = ''
 
 # n de logins
 STR_1, STR_2 = email, 'POST /rest/user/login'
@@ -18,8 +20,6 @@ STR_1, STR_2 = email, 'POST /rest/user/login'
 #STR_1, STR_2 = '', token
 # case 1
 #STR_1, STR_2 = 'GET /rest/basket/', token
-# case 1: legitimous requests
-#STR_1, STR_2 = 'GET /rest/basket/6', token
 # case 2
 #STR_1, STR_2 = 'POST /api/BasketItems/', token
 

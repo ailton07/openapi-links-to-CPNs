@@ -1,17 +1,17 @@
-# Openapi Links to CPNs
+# Links2CPN - Openapi Links to CPNs
 
-Create a Colored Petri Net from an OpenAPI Specification (with Links), using the library Snakes, and apply the conformance checking algorithm from Carrasquel, Mecheraoui & Lomazova, 2021 with custom event log files.
+A tool to create a Colored Petri Net from an OpenAPI Specification (with Links), using the library Snakes, and apply the conformance checking algorithm from Carrasquel, Mecheraoui & Lomazova, 2021 with custom event log files.
 
 
 ## Installation
-Make sure you already have Python 3.x installed in your system.
+Make sure you already have Python 3.x installed in your system (Tested with Python 3.9) and execute:
 
 ```
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
-(Tested with Python 3.9)
+
 
 ## Usage
 ```
@@ -32,7 +32,7 @@ Line 147 is not present in the model: GET /api/BasketItems/11 200 33ms
 Line 148 is not present in the model: PUT /api/BasketItems/11 200 31ms
 Done in 3.7537190914154053 seconds
 ```
-Alternatively, you can execute the `run_examples.py` script that already has set `<open_api_specification_path>` and  `<event_logs_path>` information.
+Alternatively, you can execute the `run_examples.py` script that already has set an example of `<open_api_specification_path>` and  `<event_logs_path>` information and saves the output in `run_examples.output.txt`.
 
 ```
 
@@ -40,4 +40,5 @@ $ python3 run_examples.py
 
 ```
 
-## License
+## Reference
+[SNAKES is the net algebra kit for editors and simulators](https://snakes.ibisc.univ-evry.fr/)
