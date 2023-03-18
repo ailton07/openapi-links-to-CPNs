@@ -1,6 +1,6 @@
 import os
 
-EXECUTABLE = "execute_replay.py"
+EXECUTABLE = "src/execute_replay.py"
 # strutuctural problem based on BOLA_Example, that is the same endpoint POST /login with 2 different resulting status codes
 #OPENAPI_PATH, LOGS_PATH = 'examples/Structural_Problem_Based_on_BOLA_Example.yaml', 'logs/combined_example_structural_problem.json'
 
