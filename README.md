@@ -15,6 +15,7 @@ $ pip3 install -r requirements.txt
 
 ## Usage
 ```
+$ cd src/
 $ python3 execute_replay.py <open_api_specification_path> <event_logs_path>
 
 // Example
