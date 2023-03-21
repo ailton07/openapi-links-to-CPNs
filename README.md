@@ -2,7 +2,7 @@
 
 A tool to create a Colored Petri Net from an OpenAPI Specification (with Links), using the library Snakes, and apply the conformance checking algorithm from Carrasquel, Mecheraoui & Lomazova, 2021 with custom event log files.
 
-
+---
 ## Installation
 Make sure you already have Python 3.x installed in your system (Tested with Python 3.9) and execute:
 
@@ -41,5 +41,10 @@ $ python3 run_examples.py
 
 ```
 
+---
 ## Reference
 [SNAKES is the net algebra kit for editors and simulators](https://snakes.ibisc.univ-evry.fr/)
+
+## License
+
+Licensed under the [GNU GPLv3](LICENSE) license.
