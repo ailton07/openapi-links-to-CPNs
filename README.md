@@ -1,6 +1,8 @@
-# Links2CPN - Openapi Links to CPNs
+# Links2CPN - OpenAPI Links to CPNs
 
 A tool to create a Colored Petri Net from an OpenAPI Specification (with Links), using the library Snakes, and apply the conformance checking algorithm from Carrasquel, Mecheraoui & Lomazova, 2021 with custom event log files.
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ---
 ## Installation
