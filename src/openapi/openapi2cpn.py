@@ -153,7 +153,7 @@ class OpenAPI2PetriNet:
                 parameters_key_value = link_value.get('parameters')
                 if local_operation_id == operation_id and parameters_key_value:
                     ((parameter_id, parameter_value),) = parameters_key_value.items()
-                    if property_name.get('name') in parameter_value:
+                    if property_name.get('name') in parameter_value or property_name.get('name') in parameter_id:
                         return True
         return False
 
