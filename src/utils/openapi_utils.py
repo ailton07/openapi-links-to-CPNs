@@ -143,7 +143,7 @@ class OpenAPIUtils:
             uri = path_key
             for operation_object_key, operation_object_value in path_value.items():
                 for response_key, response_object_value in operation_object_value.get('responses').items():
-                    uri = OpenAPIUtils.create_transition_name(operation_object_key, uri, response_key)
+                    uri = OpenAPIUtils.create_transition_name(operation_object_key, path_key, response_key)
                     operationId = operation_object_value.get('operationId')
                     if operationId == operation_id:
                         return uri
