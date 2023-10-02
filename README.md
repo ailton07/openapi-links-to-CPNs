@@ -13,6 +13,10 @@ $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
+Besides that, you may want to install [GraphViz](https://graphviz.org/) to be able to draw nets.
+```
+sudo apt install graphviz
+```
 
 
 ## Usage
