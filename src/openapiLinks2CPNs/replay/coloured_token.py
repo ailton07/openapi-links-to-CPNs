@@ -70,13 +70,16 @@ class RequestResponseToken(ColouredToken):
             the response is the value in self.response_body in string format
             ex: 'id', "6"
         """
+        response = json.loads(self.response_body).get('response_body')
         if len(str.split(element, '.')) > 1 :
-            response = json.loads(self.response_body)['response_body']
             for splited_element in str.split(element, '.'):
                 key = splited_element
                 response = response.get(splited_element)
             return key, str(response)
-        return element, str(json.loads(self.response_body).get('response_body').get(element))
+        # check if the response_body has element, otherwise, return empty
+        if  (type(response) != dict or not response.get(element)):
+            raise Exception(f"Response {self.response_body} doenst have element {element}")
+        return element, str(response.get(element))
 
     def _get_key_value_from_response_body(self, element, new_name=None):
         key, response = self._get_from_reponse_body(element)
