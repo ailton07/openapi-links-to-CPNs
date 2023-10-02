@@ -54,6 +54,9 @@ class LogUtils:
 
     @staticmethod
     def extract_request_body_from_log(log_json):
+        requestBody = log_json.get('requestBody')
+        if isinstance(requestBody, str):
+            return json.loads(requestBody)
         return log_json.get('requestBody')
 
     @staticmethod
