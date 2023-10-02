@@ -102,6 +102,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/store.Memo'
+          links:
+            getMemo:
+              operationId: patchMemo
+              parameters:
+                memoId: '$response.body#/id'
         '400':
           description: Malformatted post memo request | Content size overflow, up to 1MB
         '401':
