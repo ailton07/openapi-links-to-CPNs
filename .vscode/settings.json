@@ -11,5 +11,8 @@
         "-p",
         "*test*.py"
     ],
-    "search.useIgnoreFiles": false
+    "search.useIgnoreFiles": false,
+    "python.analysis.extraPaths": [
+        "./src/openapiLinks2CPNs"
+    ]
 }

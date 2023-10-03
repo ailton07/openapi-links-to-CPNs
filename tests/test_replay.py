@@ -1,5 +1,7 @@
 import pytest
+
 from replay.replay import Replay
+
 
 # TODO: Improve test cases
 # TODO: fix intermitent error
