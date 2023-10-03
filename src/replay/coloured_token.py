@@ -76,6 +76,14 @@ class RequestResponseToken(ColouredToken):
                 key = splited_element
                 response = response.get(splited_element)
             return key, str(response)
+        
+        # check if the response_body is a list
+        if (type(response) == list):
+            for response_element in response:
+                if response_element.get(element):
+                    return element, str(response_element.get(element))
+            raise Exception(f"Response List {self.response_body} doenst have element {element}")
+
         # check if the response_body has element, otherwise, return empty
         if  (type(response) != dict or not response.get(element)):
             raise Exception(f"Response {self.response_body} doenst have element {element}")
