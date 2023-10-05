@@ -54,13 +54,25 @@ class LogUtils:
 
     @staticmethod
     def extract_request_body_from_log(log_json):
+        requestBody = log_json.get('requestBody')
+        if isinstance(requestBody, str):
+            return json.loads(requestBody)
         return log_json.get('requestBody')
+    
+    @staticmethod
+    def extract_response_body_from_log(log_json):
+        responseBody = log_json.get('responseBody')
+        if isinstance(responseBody, str):
+            return json.loads(responseBody)
+        return log_json.get('responseBody')
 
     @staticmethod
     def extract_uri_from_log(log_json):
         uri = log_json.get('uri')
         if uri[-1] == '/':
             uri = uri[:-1]
+        if '?' in uri:
+            uri = uri.split('?')[0]
         return str.lower(uri)
 
     @staticmethod
@@ -108,14 +120,14 @@ class LogUtils:
                        'method': log_json.get('method'),
                        'user_id': LogUtils.get_user_identification(log_json)
                    }, {
-                       'response_body': log_json.get('responseBody'),
+                       'response_body': LogUtils.extract_response_body_from_log(log_json),
                        'user_id': LogUtils.get_user_identification(log_json)
                    }, log_json.get('statusCode')
 
     @staticmethod
     def create_response_data_from_log(log_json, parameter):
         return {
-            parameter: log_json.get('responseBody').get(parameter), 
+            parameter: LogUtils.extract_response_body_from_log(log_json).get(parameter), 
             'user_id': LogUtils.get_user_identification(log_json)
             }   
 

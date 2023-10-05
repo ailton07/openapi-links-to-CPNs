@@ -17,7 +17,11 @@
             // Attack
             //"args": [ "examples/JuiceShop.yaml", "logs/real_logs_juice_shop_signup_view_basket.log"]
             // real_logs_experiment.log
-            "args": ["examples/OWASP-Juice-Shop-experiment.yaml", "logs/real_logs_experiment.log"]
+            //"args": ["examples/OWASP-Juice-Shop-experiment.yaml", "logs/real_logs_experiment.log"]
+            "args": ["examples/memos-API-3.0.yml", "logs/memos_login_create_archieve.json"]
+            //"args": ["examples/memos-API-3.0.yml", "logs/memos_login_and_attack_log.json"]
+            
+            
         }
     ]
 }

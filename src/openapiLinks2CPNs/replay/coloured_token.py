@@ -70,13 +70,28 @@ class RequestResponseToken(ColouredToken):
             the response is the value in self.response_body in string format
             ex: 'id', "6"
         """
+        response = json.loads(self.response_body).get('response_body')
         if len(str.split(element, '.')) > 1 :
-            response = json.loads(self.response_body)['response_body']
             for splited_element in str.split(element, '.'):
                 key = splited_element
                 response = response.get(splited_element)
             return key, str(response)
-        return element, str(json.loads(self.response_body).get('response_body').get(element))
+        
+        # check if the response_body is a list
+        if (type(response) == list):
+            response_list = []
+            for response_element in response:
+                if response_element.get(element):
+                    response_list.append(str(response_element.get(element)))
+                    #return element, str(response_element.get(element))
+            if len(response_list) == 0:
+                raise Exception(f"Response List {self.response_body} doenst have element {element}")
+            return element, response_list
+
+        # check if the response_body has element, otherwise, return empty
+        if  (type(response) != dict or not response.get(element)):
+            raise Exception(f"Response {self.response_body} doenst have element {element}")
+        return element, str(response.get(element))
 
     def _get_key_value_from_response_body(self, element, new_name=None):
         key, response = self._get_from_reponse_body(element)
@@ -86,7 +101,19 @@ class RequestResponseToken(ColouredToken):
             return {key : response}
 
     def get_token_from_reponse_body (self, element, new_name=None):
+        from snakes.data import MultiSet
         result = self._get_key_value_from_response_body (element, new_name)
+
+        # if the response is a list, organize here
+        ((dict_key, dict_values),) = result.items()
+        if (type(dict_values) == list):
+            response_list = MultiSet()
+            for dict_value in dict_values:
+                result_list = {dict_key: dict_value}
+                result_list[USER_IDENTIFICATION] = self.user_id
+                response_list.add(ColouredToken(result_list))
+            return response_list
+        
         result[USER_IDENTIFICATION] = self.user_id
         return ColouredToken(result)
 
