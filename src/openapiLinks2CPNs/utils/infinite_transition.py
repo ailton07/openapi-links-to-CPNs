@@ -1,4 +1,5 @@
 from snakes.plugins import plugin, new_instance
+from snakes.data import MultiSet
 
 @plugin("snakes.nets")
 def extend (module) :
@@ -39,11 +40,23 @@ def extend (module) :
                 # for place, label in self.input() :
                 #     place.remove(label.flow(binding))
                 for place, label in self.output() :
+                    multiset = label.flow(binding)
+                    if multiset.size() > 0 and type(multiset.items()) == list \
+                    and type(multiset.items()[0]) == MultiSet  and len(multiset.items()[0].items()) > 1:
+                        self.handle_multiple_tokens(place, multiset)
+                        return
                     place.add(label.flow(binding))
             else :
                 raise ValueError("transition not enabled for %s" % binding)
             
+        def handle_multiple_tokens(self, place, multiset):
+            
+            for item in multiset.items()[0].items():
+                place.add(MultiSet(item))
+        
     return Transition
+
+
     
 
     
