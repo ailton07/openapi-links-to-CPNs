@@ -20,13 +20,13 @@ def get_logs(logs_name):
      {'authentication.umail':'email@email.com'}),
     # test with one part item (status)
      ("logs/combined_example_structural_problem.json", 3, 
-     {'status':'success'})
+     {'status':'success'})     
 ])
 def test_get_from_reponse_body(logs_name, line, expected_result, get_logs):
     log_line = get_logs[line]
     request_line = RequestResponseToken(*LogUtils.create_request_response_from_log(log_line))
     for key_value, expected_value in expected_result.items():
-        value = request_line._get_from_reponse_body(key_value)
+        key, value = request_line._get_from_reponse_body(key_value)
         assert value is not None 
         assert value == expected_value
 
@@ -41,7 +41,7 @@ def test_get_from_reponse_body(logs_name, line, expected_result, get_logs):
      'status',
      {'status':'success', 'user_id': '::ffff:127.0.0.1'})
 ])
-def test_get_from_reponse_body(logs_name, line, test_value, expected_result, get_logs):
+def test_token_get_from_reponse_body(logs_name, line, test_value, expected_result, get_logs):
     log_line = get_logs[line]
     request_line = RequestResponseToken(*LogUtils.create_request_response_from_log(log_line))
     value = request_line.get_token_from_reponse_body(test_value)
