@@ -85,7 +85,7 @@ class RequestResponseToken(ColouredToken):
                     response_list.append(str(response_element.get(element)))
                     #return element, str(response_element.get(element))
             if len(response_list) == 0:
-                raise Exception(f"Response List {self.response_body} doenst have element {element}")
+                raise Exception(f"Response List {self.response_body} doenst have element {element} or is empty")
             return element, response_list
 
         # check if the response_body has element, otherwise, return empty
