@@ -1,0 +1,9 @@
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/apideck.com/crm/9.9.2/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/art19.com/1.0.0/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/cpy.re/peertube/5.1.0/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/digitalocean.com/2.0/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/gambitcomm.local/mimic/21.00/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/graphhopper.com/1.0.0/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/linode.com/4.151.1/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/listennotes.com/2.0/openapi.yaml
+https://github.com/APIs-guru/openapi-directory/blob/main/APIs/surevoip.co.uk/9dcb0dc8/openapi.yaml
