@@ -66,7 +66,12 @@ class LogUtils:
             try:
                 return json.loads(responseBody)
             except json.decoder.JSONDecodeError as exception:
-                return json.loads(responseBody.replace("'", '"'))
+                try:
+                    return json.loads(responseBody.replace("'", '"'))
+                except json.decoder.JSONDecodeError as exception:
+                    print(f'[extract_response_body_from_log] error converting JSON, ignoring')
+                    return {}
+                
         return log_json.get('responseBody')
 
     @staticmethod
