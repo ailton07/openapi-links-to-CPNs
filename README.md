@@ -9,7 +9,7 @@ A tool to create a Colored Petri Net from an OpenAPI Specification (with Links),
 Make sure you already have Python 3.x installed in your system (Tested with Python 3.9) and execute:
 
 ```
-$ python3 -m venv venv
+$ python3.9 -m venv venv
 $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
