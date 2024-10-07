@@ -63,7 +63,15 @@ class LogUtils:
     def extract_response_body_from_log(log_json):
         responseBody = log_json.get('responseBody')
         if isinstance(responseBody, str):
-            return json.loads(responseBody)
+            try:
+                return json.loads(responseBody)
+            except json.decoder.JSONDecodeError as exception:
+                try:
+                    return json.loads(responseBody.replace("'", '"'))
+                except json.decoder.JSONDecodeError as exception:
+                    print(f'[extract_response_body_from_log] error converting JSON, ignoring')
+                    return {}
+                
         return log_json.get('responseBody')
 
     @staticmethod

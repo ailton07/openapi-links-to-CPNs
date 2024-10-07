@@ -79,6 +79,12 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/PostBasketItemsResponse'
+        '400':
+          description: Error resposen status code 400
+        '401':
+          description: Error resposen status code 401
+        '500':
+          description: Error resposen status code 500
 components:
   schemas:
     PostBasketItemsRequest:

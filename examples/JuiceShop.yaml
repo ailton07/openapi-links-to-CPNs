@@ -56,6 +56,28 @@ paths:
               schema:
                 type: object
                 $ref: '#/components/schemas/GetBasketByIdResponse'
+        '400':
+          description: Error resposen status code 400
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/GetBasketByIdErrorResponse'
+        '401':
+          description: Error resposen status code 401
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/GetBasketByIdErrorResponse'
+        '500':
+          description: Error resposen status code 500
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/GetBasketByIdErrorResponse'
+          
 components:
   schemas:
     LoginUserRequest:
@@ -109,6 +131,9 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+    GetBasketByIdErrorResponse:
+      type: object
+        # empty object
     Product:
       type: object
       properties:
