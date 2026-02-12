@@ -42,7 +42,8 @@ class OpenAPI2PetriNet:
 
         spec = self.parser.specification
         paths = spec.get('paths')
-
+        from utils.draw_utils import DrawUtils
+        counter = 0
         for path_key, path_value in spec.get('paths').items():
             uri = path_key
 
@@ -54,8 +55,11 @@ class OpenAPI2PetriNet:
                     # create only places associated with link
                     self.handle_request_body(transition, operation_object_value, response_object_value, operation_id)
                     self.handle_parameters(transition, operation_object_value, response_object_value, operation_id)
-        
+                    DrawUtils.draw({}, f"construction-part-{counter}.png", petri_net)
+                counter += 1
+        DrawUtils.draw({}, f"construction-part-{counter+1}.png", petri_net)
         self.create_link_arcs()
+        DrawUtils.draw({}, f"construction-part-{counter+2}.png", petri_net)
         self.remove_disconnected_transitions()
         return petri_net
 
